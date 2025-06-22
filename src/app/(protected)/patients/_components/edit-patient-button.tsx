@@ -31,10 +31,10 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <div className="flex items-center px-2 py-1.5 text-sm cursor-pointer w-full">
           <Edit className="h-4 w-4 mr-2" />
-          Editar Paciente
-        </Button>
+          Editar
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -58,4 +58,4 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
   );
 };
 
-export default EditPatientButton;
+export { EditPatientButton };

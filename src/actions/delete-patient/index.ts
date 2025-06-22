@@ -43,9 +43,9 @@ export const deletePatientAction = actionClient
 
     // Revalidar cache da página de pacientes
     revalidatePath("/patients");
-    
-    return { 
+
+    return {
       success: true,
-      message: "Paciente deletado com sucesso"
+      message: "Paciente deletado com sucesso",
     };
   });

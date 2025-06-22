@@ -24,9 +24,12 @@ interface DeletePatientButtonProps {
   patientName: string;
 }
 
-const DeletePatientButton = ({ patientId, patientName }: DeletePatientButtonProps) => {
+const DeletePatientButton = ({
+  patientId,
+  patientName,
+}: DeletePatientButtonProps) => {
   const router = useRouter();
-  
+
   const { execute: executeDeletePatient, isExecuting } = useAction(
     deletePatientAction,
     {
@@ -43,14 +46,13 @@ const DeletePatientButton = ({ patientId, patientName }: DeletePatientButtonProp
   const handleDeletePatient = () => {
     executeDeletePatient({ id: patientId });
   };
-
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" disabled={isExecuting}>
-          <Trash className="h-4 w-4 mr-2" />
-          Deletar Paciente
-        </Button>
+        <div className="text-destructive flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
+          <Trash className="mr-2 h-4 w-4" />
+          Deletar
+        </div>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -58,13 +60,14 @@ const DeletePatientButton = ({ patientId, patientName }: DeletePatientButtonProp
             Tem certeza que deseja deletar este paciente?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Esta ação não pode ser revertida. Isso irá deletar permanentemente o paciente{" "}
-            <strong>{patientName}</strong> e todas as consultas associadas.
+            Esta ação não pode ser revertida. Isso irá deletar permanentemente o
+            paciente <strong>{patientName}</strong> e todas as consultas
+            associadas.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction 
+          <AlertDialogAction
             onClick={handleDeletePatient}
             disabled={isExecuting}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -77,4 +80,4 @@ const DeletePatientButton = ({ patientId, patientName }: DeletePatientButtonProp
   );
 };
 
-export default DeletePatientButton;
+export { DeletePatientButton };
