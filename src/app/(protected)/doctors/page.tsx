@@ -43,7 +43,8 @@ const DoctorsPage = async () => {
         </PageActions>
       </PageHeader>
       <PageContent>
-        <div className="grid grid-cols-3 gap-6">
+        {/* alterado de gap-6 para gap-8 */}
+        <div className="grid grid-cols-3 gap-8">
           {doctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
