@@ -2,67 +2,52 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import {
-  PageActions,
-  PageContainer,
-  PageContent,
-  PageDescription,
-  PageHeader,
-  PageHeaderContent,
-  PageTitle,
-} from "@/components/ui/page-container";
+import { PageContainer } from "@/components/ui/page-container";
 import { db } from "@/db";
 import { patientsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AddPatientButton from "./_components/add-patient-button";
-import { PatientsDataTable } from "./_components/patients-data-table";
+import { PatientsClientPage } from "./_components/patients-client-page";
 
 const PatientsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-
   if (!session?.user) {
     redirect("/authentication");
   }
 
-  if (!session.user.clinic) {
+  // Buscar a clínica do usuário
+  const userClinic = await db.query.usersToClinicsTable.findFirst({
+    where: (usersToClinics, { eq }) =>
+      eq(usersToClinics.userId, session.user.id),
+    with: {
+      clinic: true,
+    },
+  });
+
+  if (!userClinic) {
     redirect("/clinic-form");
   }
 
   const patients = await db.query.patientsTable.findMany({
-    where: eq(patientsTable.clinicId, session.user.clinic.id),
+    where: eq(patientsTable.clinicId, userClinic.clinic.id),
+    orderBy: (patients, { asc }) => [asc(patients.name)],
   });
-
   return (
     <PageContainer>
-      <PageHeader>
-        {" "}
-        <PageHeaderContent>
-          <PageTitle>Pacientes</PageTitle>
-          <PageDescription>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Pacientes</h1>
+          <p className="text-muted-foreground text-sm">
             Acesso a detalhes dos pacientes cadastrados
-          </PageDescription>
-        </PageHeaderContent>
-        <PageActions>
-          <AddPatientButton />
-        </PageActions>
-      </PageHeader>{" "}
-      <PageContent>
-        {patients.length > 0 ? (
-          <PatientsDataTable data={patients} />
-        ) : (
-          <div className="text-muted-foreground py-12 text-center">
-            <p className="text-lg font-medium">
-              Nenhum paciente cadastrado ainda.
-            </p>
-            <p className="mt-2 text-sm">
-              Clique em "Adicionar Paciente" para começar.
-            </p>
-          </div>
-        )}
-      </PageContent>
+          </p>
+        </div>
+        <AddPatientButton />
+      </div>      <div className="mt-8">
+        <PatientsClientPage patients={patients} />
+      </div>
     </PageContainer>
   );
 };

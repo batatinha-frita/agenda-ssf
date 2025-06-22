@@ -139,6 +139,7 @@ export const doctorsTableRelations = relations(
 );
 
 export const patientSexEnum = pgEnum("patient_sex", ["male", "female"]);
+export const paymentStatusEnum = pgEnum("payment_status", ["paid", "pending", "overdue"]);
 
 export const patientsTable = pgTable("patients", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -169,6 +170,9 @@ export const patientsTableRelations = relations(
 export const appointmentsTable = pgTable("appointments", {
   id: uuid("id").defaultRandom().primaryKey(),
   date: timestamp("date").notNull(),
+  appointmentPriceInCents: integer("appointment_price_in_cents").notNull(),
+  paymentStatus: paymentStatusEnum("payment_status").notNull().default("pending"),
+  notes: text("notes"),
   clinicId: uuid("clinic_id")
     .notNull()
     .references(() => clinicsTable.id, { onDelete: "cascade" }),

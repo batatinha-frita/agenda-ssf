@@ -23,20 +23,22 @@ interface EditPatientButtonProps {
     phoneNumber: string;
     sex: "male" | "female";
   };
+  children?: React.ReactNode;
 }
 
-const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
+const EditPatientButton = ({ patient, children }: EditPatientButtonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
-          <Edit className="mr-2 h-4 w-4" />
-          Editar
-        </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+        {children || (
+          <div className="flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
+            <Edit className="mr-2 h-4 w-4" />
+            Editar
+          </div>
+        )}
+      </DialogTrigger>      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Paciente</DialogTitle>
           <DialogDescription>

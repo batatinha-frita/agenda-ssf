@@ -66,88 +66,91 @@ const UpsertPatientForm = ({
   const onSubmit = (data: UpsertPatientSchema) => {
     executeUpsertPatient(data);
   };
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome do Paciente</FormLabel>
-              <FormControl>
-                <Input placeholder="Digite o nome do paciente" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Digite o email do paciente"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phoneNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Número de Telefone</FormLabel>
-              <FormControl>
-                <PatternFormat
-                  format="(##) #####-####"
-                  mask="_"
-                  customInput={Input}
-                  placeholder="(11) 99999-9999"
-                  onValueChange={(values) => {
-                    field.onChange(values.value);
-                  }}
-                  value={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="sex"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sexo</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nome do Paciente</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o sexo" />
-                  </SelectTrigger>
+                  <Input placeholder="Digite o nome do paciente" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="male">Masculino</SelectItem>
-                  <SelectItem value="female">Feminino</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <div className="flex justify-end pt-4">
+          <FormField
+            control={form.control}
+            name="sex"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Sexo</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o sexo" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Masculino</SelectItem>
+                    <SelectItem value="female">Feminino</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Digite o email do paciente"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Número de Telefone</FormLabel>
+                <FormControl>
+                  <PatternFormat
+                    format="(##) #####-####"
+                    mask="_"
+                    customInput={Input}
+                    placeholder="(11) 99999-9999"
+                    onValueChange={(values) => {
+                      field.onChange(values.value);
+                    }}
+                    value={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex justify-end pt-4 border-t">
           <Button type="submit" disabled={isExecuting}>
             {isExecuting ? "Salvando..." : "Salvar Paciente"}
           </Button>

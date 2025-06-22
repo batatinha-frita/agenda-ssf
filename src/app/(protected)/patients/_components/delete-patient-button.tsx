@@ -22,11 +22,13 @@ import { Button } from "@/components/ui/button";
 interface DeletePatientButtonProps {
   patientId: string;
   patientName: string;
+  children?: React.ReactNode;
 }
 
 const DeletePatientButton = ({
   patientId,
   patientName,
+  children,
 }: DeletePatientButtonProps) => {
   const router = useRouter();
 
@@ -49,10 +51,12 @@ const DeletePatientButton = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div className="text-destructive flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
-          <Trash className="mr-2 h-4 w-4" />
-          Deletar
-        </div>
+        {children || (
+          <div className="text-destructive flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
+            <Trash className="mr-2 h-4 w-4" />
+            Deletar
+          </div>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

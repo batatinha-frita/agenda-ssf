@@ -25,8 +25,8 @@ const AddPatientButton = () => {
           <Plus className="mr-2 h-4 w-4" />
           Adicionar Paciente
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      </DialogTrigger>{" "}
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Adicionar Paciente</DialogTitle>
           <DialogDescription>
