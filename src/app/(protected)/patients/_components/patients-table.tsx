@@ -50,9 +50,7 @@ export function PatientsTable({ patients }: PatientsTableProps) {
         <TableBody>
           {patients.map((patient) => (
             <TableRow key={patient.id}>
-              <TableCell className="font-medium">
-                {patient.name}
-              </TableCell>
+              <TableCell className="font-medium">{patient.name}</TableCell>
               <TableCell className="text-muted-foreground">
                 {patient.email}
               </TableCell>

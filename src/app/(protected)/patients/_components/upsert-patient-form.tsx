@@ -69,7 +69,7 @@ const UpsertPatientForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="name"
@@ -107,7 +107,7 @@ const UpsertPatientForm = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="email"
@@ -150,7 +150,7 @@ const UpsertPatientForm = ({
           />
         </div>
 
-        <div className="flex justify-end pt-4 border-t">
+        <div className="flex justify-end border-t pt-4">
           <Button type="submit" disabled={isExecuting}>
             {isExecuting ? "Salvando..." : "Salvar Paciente"}
           </Button>

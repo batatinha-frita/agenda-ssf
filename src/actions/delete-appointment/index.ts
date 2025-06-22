@@ -23,7 +23,8 @@ export const deleteAppointment = actionClient
 
     // Buscar a clínica do usuário
     const userClinic = await db.query.usersToClinicsTable.findFirst({
-      where: (usersToClinics, { eq }) => eq(usersToClinics.userId, session.user.id),
+      where: (usersToClinics, { eq }) =>
+        eq(usersToClinics.userId, session.user.id),
       with: {
         clinic: true,
       },

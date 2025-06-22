@@ -45,7 +45,8 @@ const PatientsPage = async () => {
           </p>
         </div>
         <AddPatientButton />
-      </div>      <div className="mt-8">
+      </div>{" "}
+      <div className="mt-8">
         <PatientsClientPage patients={patients} />
       </div>
     </PageContainer>

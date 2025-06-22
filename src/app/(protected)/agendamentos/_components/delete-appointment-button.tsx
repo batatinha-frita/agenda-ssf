@@ -24,7 +24,9 @@ interface DeleteAppointmentButtonProps {
   appointmentId: string;
 }
 
-export function DeleteAppointmentButton({ appointmentId }: DeleteAppointmentButtonProps) {
+export function DeleteAppointmentButton({
+  appointmentId,
+}: DeleteAppointmentButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -55,18 +57,21 @@ export function DeleteAppointmentButton({ appointmentId }: DeleteAppointmentButt
         <AlertDialogHeader>
           <AlertDialogTitle>Deletar consulta</AlertDialogTitle>
           <AlertDialogDescription>
-            Tem certeza que deseja deletar esta consulta? Esta ação não pode ser desfeita.
-            Apenas o registro da consulta será removido, os dados do paciente e médico permanecerão.
+            Tem certeza que deseja deletar esta consulta? Esta ação não pode ser
+            desfeita. Apenas o registro da consulta será removido, os dados do
+            paciente e médico permanecerão.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction 
+          <AlertDialogAction
             onClick={handleDelete}
             disabled={deleteAppointmentAction.status === "executing"}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {deleteAppointmentAction.status === "executing" ? "Deletando..." : "Deletar"}
+            {deleteAppointmentAction.status === "executing"
+              ? "Deletando..."
+              : "Deletar"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

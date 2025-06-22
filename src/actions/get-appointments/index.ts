@@ -22,7 +22,8 @@ export const getAppointments = actionClient
 
     // Buscar a clínica do usuário
     const userClinic = await db.query.usersToClinicsTable.findFirst({
-      where: (usersToClinics, { eq }) => eq(usersToClinics.userId, session.user.id),
+      where: (usersToClinics, { eq }) =>
+        eq(usersToClinics.userId, session.user.id),
       with: {
         clinic: true,
       },
@@ -35,7 +36,7 @@ export const getAppointments = actionClient
     // Definir o início e fim do dia
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
-    
+
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -45,7 +46,7 @@ export const getAppointments = actionClient
         eq(appointmentsTable.doctorId, doctorId),
         eq(appointmentsTable.clinicId, userClinic.clinic.id),
         gte(appointmentsTable.date, startOfDay),
-        lt(appointmentsTable.date, endOfDay)
+        lt(appointmentsTable.date, endOfDay),
       ),
       columns: {
         id: true,
@@ -53,5 +54,5 @@ export const getAppointments = actionClient
       },
     });
 
-    return appointments.map(appointment => appointment.date);
+    return appointments.map((appointment) => appointment.date);
   });

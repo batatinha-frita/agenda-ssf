@@ -81,22 +81,22 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     appointment.paymentStatus === "paid"
                       ? "default"
                       : appointment.paymentStatus === "overdue"
-                      ? "destructive"
-                      : "secondary"
+                        ? "destructive"
+                        : "secondary"
                   }
                   className={
                     appointment.paymentStatus === "paid"
                       ? "bg-green-100 text-green-700 hover:bg-green-200"
                       : appointment.paymentStatus === "overdue"
-                      ? ""
-                      : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+                        ? ""
+                        : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
                   }
                 >
                   {appointment.paymentStatus === "paid"
                     ? "Pago"
                     : appointment.paymentStatus === "overdue"
-                    ? "Atrasado"
-                    : "Em Aberto"}
+                      ? "Atrasado"
+                      : "Em Aberto"}
                 </Badge>
               </TableCell>
               <TableCell>

@@ -11,11 +11,11 @@ interface SearchBarProps {
   showButton?: boolean;
 }
 
-export function SearchBar({ 
-  placeholder = "Pesquisar...", 
+export function SearchBar({
+  placeholder = "Pesquisar...",
   onSearch,
   className = "",
-  showButton = false
+  showButton = false,
 }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -36,19 +36,20 @@ export function SearchBar({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-  };  return (
+  };
+  return (
     <div className={className}>
       <div className="relative">
         {isSearching && searchQuery ? (
-          <Loader2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground animate-spin" />
+          <Loader2 className="text-muted-foreground absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 animate-spin" />
         ) : (
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2" />
         )}
         <Input
           placeholder={placeholder}
           value={searchQuery}
           onChange={handleChange}
-          className="pl-12 h-14 text-base border-2 focus:border-primary bg-background/60 backdrop-blur-sm shadow-sm"
+          className="focus:border-primary bg-background/60 h-14 border-2 pl-12 text-base shadow-sm backdrop-blur-sm"
         />
       </div>
     </div>

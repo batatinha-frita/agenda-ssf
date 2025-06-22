@@ -22,7 +22,7 @@ export function AddAppointmentButton({
   // Reset do formulário quando o dialog fechar
   useEffect(() => {
     if (!dialogOpen) {
-      setResetKey(prev => prev + 1);
+      setResetKey((prev) => prev + 1);
     }
   }, [dialogOpen]);
 

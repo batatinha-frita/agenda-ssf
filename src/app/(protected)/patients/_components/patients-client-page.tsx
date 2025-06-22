@@ -19,18 +19,19 @@ export function PatientsClientPage({ patients }: PatientsClientPageProps) {
     }
 
     const lowercaseQuery = query.toLowerCase();
-    const filtered = patients.filter(patient => 
-      patient.name.toLowerCase().includes(lowercaseQuery) ||
-      patient.email.toLowerCase().includes(lowercaseQuery) ||
-      patient.phoneNumber.toLowerCase().includes(lowercaseQuery)
+    const filtered = patients.filter(
+      (patient) =>
+        patient.name.toLowerCase().includes(lowercaseQuery) ||
+        patient.email.toLowerCase().includes(lowercaseQuery) ||
+        patient.phoneNumber.toLowerCase().includes(lowercaseQuery),
     );
-    
+
     setFilteredPatients(filtered);
   };
 
   return (
     <div className="mt-8">
-      <SearchBar 
+      <SearchBar
         placeholder="Pesquisar pacientes por nome, email ou telefone..."
         className="mb-6"
         onSearch={handleSearch}

@@ -13,7 +13,8 @@ import { DoctorsClientPage } from "./_components/doctors-client-page";
 const DoctorsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
-  });  if (!session?.user) {
+  });
+  if (!session?.user) {
     redirect("/authentication");
   }
 
@@ -33,7 +34,8 @@ const DoctorsPage = async () => {
   const doctors = await db.query.doctorsTable.findMany({
     where: eq(doctorsTable.clinicId, userClinic.clinic.id),
     orderBy: (doctors, { asc }) => [asc(doctors.name)],
-  });  return (
+  });
+  return (
     <PageContainer>
       <div className="flex items-center justify-between">
         <div>
@@ -43,7 +45,8 @@ const DoctorsPage = async () => {
           </p>
         </div>
         <AddDoctorButton />
-      </div>      <DoctorsClientPage doctors={doctors} />
+      </div>{" "}
+      <DoctorsClientPage doctors={doctors} />
     </PageContainer>
   );
 };

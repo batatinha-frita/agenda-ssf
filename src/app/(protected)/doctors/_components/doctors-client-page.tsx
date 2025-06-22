@@ -21,22 +21,23 @@ export function DoctorsClientPage({ doctors }: DoctorsClientPageProps) {
     }
 
     const lowercaseQuery = query.toLowerCase();
-    const filtered = doctors.filter(doctor => 
-      doctor.name.toLowerCase().includes(lowercaseQuery) ||
-      doctor.specialty.toLowerCase().includes(lowercaseQuery)
+    const filtered = doctors.filter(
+      (doctor) =>
+        doctor.name.toLowerCase().includes(lowercaseQuery) ||
+        doctor.specialty.toLowerCase().includes(lowercaseQuery),
     );
-    
+
     setFilteredDoctors(filtered);
   };
   return (
     <div className="mt-8">
-      <SearchBar 
+      <SearchBar
         placeholder="Pesquisar médicos por nome ou especialidade..."
         className="mb-6"
         onSearch={handleSearch}
       />
       {filteredDoctors.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredDoctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}

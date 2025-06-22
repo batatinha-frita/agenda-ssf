@@ -87,20 +87,24 @@ export function UpsertAppointmentForm({
     typeof doctorsTable.$inferSelect | null
   >(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-  const [existingAppointments, setExistingAppointments] = useState<Date[]>([]);  const form = useForm<z.infer<typeof formSchema>>({
+  const [existingAppointments, setExistingAppointments] = useState<Date[]>([]);
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       patientId: appointment?.patientId ?? "",
       doctorId: appointment?.doctorId ?? "",
       date: appointment?.date ? new Date(appointment.date) : undefined,
-      time: appointment?.date ? format(new Date(appointment.date), "HH:mm") : "",
+      time: appointment?.date
+        ? format(new Date(appointment.date), "HH:mm")
+        : "",
       appointmentPrice: appointment?.appointmentPriceInCents
         ? appointment.appointmentPriceInCents / 100
         : 0,
       paymentStatus: appointment?.paymentStatus ?? "pending",
       notes: appointment?.notes ?? "",
     },
-  });  const upsertAppointmentAction = useAction(upsertAppointment, {
+  });
+  const upsertAppointmentAction = useAction(upsertAppointment, {
     onSuccess: () => {
       toast.success("Agendamento criado com sucesso!");
       onSuccess?.();
@@ -227,7 +231,8 @@ export function UpsertAppointmentForm({
     }
 
     setAvailableTimes(times);
-  };  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  };
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log("Dados do formulário:", values);
     upsertAppointmentAction.execute({
       ...values,
@@ -238,20 +243,23 @@ export function UpsertAppointmentForm({
 
   const isDateFieldDisabled = !patientId || !doctorId;
   const isTimeFieldDisabled = !patientId || !doctorId || !selectedDate;
-  return (    <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+  return (
+    <DialogContent className="max-h-[90vh] max-w-7xl overflow-y-auto">
       <DialogHeader>
         <DialogTitle>
           {appointment ? "Editar consulta" : "Agendar consulta"}
         </DialogTitle>
         <DialogDescription>
-          {appointment 
+          {appointment
             ? "Edite os dados da consulta existente."
-            : "Preencha os dados para agendar uma nova consulta."
-          }
+            : "Preencha os dados para agendar uma nova consulta."}
         </DialogDescription>
-      </DialogHeader><Form {...form}>        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      </DialogHeader>
+      <Form {...form}>
+        {" "}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* Linha 1: Paciente e Médico */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="patientId"
@@ -310,7 +318,7 @@ export function UpsertAppointmentForm({
 
           {/* Informação do valor padrão */}
           {selectedDoctor && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="rounded-lg border border-green-200 bg-green-50 p-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-green-700">
                   Valor padrão da consulta:
@@ -326,7 +334,9 @@ export function UpsertAppointmentForm({
           )}
 
           {/* Linha 2: Valor da consulta e Status do pagamento */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">            <FormField
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {" "}
+            <FormField
               control={form.control}
               name="appointmentPrice"
               render={({ field }) => (
@@ -349,12 +359,14 @@ export function UpsertAppointmentForm({
                     />
                   </FormControl>
                   <FormDescription>
-                    Você pode ajustar o valor para aplicar desconto ou acréscimo.
+                    Você pode ajustar o valor para aplicar desconto ou
+                    acréscimo.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
-            />            <FormField
+            />{" "}
+            <FormField
               control={form.control}
               name="paymentStatus"
               render={({ field }) => (
@@ -385,7 +397,9 @@ export function UpsertAppointmentForm({
           </div>
 
           {/* Linha 3: Data e Horário */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">            <FormField
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {" "}
+            <FormField
               control={form.control}
               name="date"
               render={({ field }) => (
@@ -402,7 +416,9 @@ export function UpsertAppointmentForm({
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {field.value ? (
-                            format(field.value, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+                            format(field.value, "dd 'de' MMMM 'de' yyyy", {
+                              locale: ptBR,
+                            })
                           ) : (
                             <span>Selecione uma data</span>
                           )}
@@ -422,7 +438,6 @@ export function UpsertAppointmentForm({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="time"
@@ -448,8 +463,10 @@ export function UpsertAppointmentForm({
                     </SelectContent>
                   </Select>
                   <FormMessage />
-                </FormItem>              )}
-            />          </div>
+                </FormItem>
+              )}
+            />{" "}
+          </div>
 
           {/* Linha 4: Observações (largura completa) */}
           <FormField
@@ -472,7 +489,7 @@ export function UpsertAppointmentForm({
               </FormItem>
             )}
           />
-          
+
           <DialogFooter className="flex gap-2 pt-4">
             <Button
               type="button"
@@ -486,8 +503,12 @@ export function UpsertAppointmentForm({
             </Button>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting
-                ? appointment ? "Salvando..." : "Agendando..."
-                : appointment ? "Salvar alterações" : "Agendar consulta"}
+                ? appointment
+                  ? "Salvando..."
+                  : "Agendando..."
+                : appointment
+                  ? "Salvar alterações"
+                  : "Agendar consulta"}
             </Button>
           </DialogFooter>
         </form>

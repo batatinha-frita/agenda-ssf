@@ -38,7 +38,8 @@ const EditPatientButton = ({ patient, children }: EditPatientButtonProps) => {
             Editar
           </div>
         )}
-      </DialogTrigger>      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      </DialogTrigger>{" "}
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Editar Paciente</DialogTitle>
           <DialogDescription>

@@ -21,8 +21,11 @@ interface AppointmentsClientPageProps {
   })[];
 }
 
-export function AppointmentsClientPage({ appointments }: AppointmentsClientPageProps) {
-  const [filteredAppointments, setFilteredAppointments] = useState(appointments);
+export function AppointmentsClientPage({
+  appointments,
+}: AppointmentsClientPageProps) {
+  const [filteredAppointments, setFilteredAppointments] =
+    useState(appointments);
 
   const handleSearch = (query: string) => {
     if (!query.trim()) {
@@ -31,9 +34,13 @@ export function AppointmentsClientPage({ appointments }: AppointmentsClientPageP
     }
 
     const lowercaseQuery = query.toLowerCase();
-    const filtered = appointments.filter(appointment => {
-      const formattedDate = format(new Date(appointment.date), "dd/MM/yyyy, HH:mm", { locale: ptBR });
-      
+    const filtered = appointments.filter((appointment) => {
+      const formattedDate = format(
+        new Date(appointment.date),
+        "dd/MM/yyyy, HH:mm",
+        { locale: ptBR },
+      );
+
       return (
         appointment.patient.name.toLowerCase().includes(lowercaseQuery) ||
         appointment.doctor.name.toLowerCase().includes(lowercaseQuery) ||
@@ -41,13 +48,13 @@ export function AppointmentsClientPage({ appointments }: AppointmentsClientPageP
         formattedDate.toLowerCase().includes(lowercaseQuery)
       );
     });
-    
+
     setFilteredAppointments(filtered);
   };
 
   return (
     <div className="mt-8">
-      <SearchBar 
+      <SearchBar
         placeholder="Pesquisar agendamentos por paciente, médico ou data..."
         className="mb-6"
         onSearch={handleSearch}

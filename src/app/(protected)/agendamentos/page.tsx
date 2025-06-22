@@ -67,7 +67,8 @@ export default async function AgendamentosPage() {
           </p>
         </div>
         <AddAppointmentButton patients={patients} doctors={doctors} />
-      </div>      <div className="mt-8">
+      </div>{" "}
+      <div className="mt-8">
         <AppointmentsClientPage appointments={appointments} />
       </div>
     </PageContainer>

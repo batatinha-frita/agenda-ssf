@@ -17,10 +17,10 @@ interface EditAppointmentButtonProps {
   doctors: (typeof doctorsTable.$inferSelect)[];
 }
 
-export function EditAppointmentButton({ 
-  appointment, 
-  patients, 
-  doctors 
+export function EditAppointmentButton({
+  appointment,
+  patients,
+  doctors,
 }: EditAppointmentButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
