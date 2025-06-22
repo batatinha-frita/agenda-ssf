@@ -25,7 +25,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { upsertPatientSchema, type UpsertPatientSchema } from "@/actions/upsert-patient/schema";
+import {
+  upsertPatientSchema,
+  type UpsertPatientSchema,
+} from "@/actions/upsert-patient/schema";
 
 interface UpsertPatientFormProps {
   onSuccess?: () => void;

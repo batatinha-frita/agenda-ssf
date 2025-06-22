@@ -45,11 +45,7 @@ export const patientsColumns: ColumnDef<Patient>[] = [
       );
     },
     cell: ({ row }) => {
-      return (
-        <div className="font-medium">
-          {row.getValue("name")}
-        </div>
-      );
+      return <div className="font-medium">{row.getValue("name")}</div>;
     },
   },
   {
@@ -68,9 +64,7 @@ export const patientsColumns: ColumnDef<Patient>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="text-muted-foreground">
-          {row.getValue("email")}
-        </div>
+        <div className="text-muted-foreground">{row.getValue("email")}</div>
       );
     },
   },
@@ -99,7 +93,8 @@ export const patientsColumns: ColumnDef<Patient>[] = [
     filterFn: (row, id, value) => {
       return (value as string[]).includes(row.getValue(id));
     },
-  },  {
+  },
+  {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
@@ -135,7 +130,7 @@ export const patientsColumns: ColumnDef<Patient>[] = [
               <ExternalLink className="h-4 w-4" />
             </Link>
           </Button>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -146,16 +141,17 @@ export const patientsColumns: ColumnDef<Patient>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Ações</DropdownMenuLabel>
               <DropdownMenuItem asChild>
-                <Link href={`/patients/${patient.id}`}>
-                  Ver detalhes
-                </Link>
+                <Link href={`/patients/${patient.id}`}>Ver detalhes</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <EditPatientButton patient={patient} />
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <DeletePatientButton patientId={patient.id} patientName={patient.name} />
+                <DeletePatientButton
+                  patientId={patient.id}
+                  patientName={patient.name}
+                />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

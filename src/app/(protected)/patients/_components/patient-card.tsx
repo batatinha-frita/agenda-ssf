@@ -23,11 +23,11 @@ interface PatientCardProps {
 
 const PatientCard = ({ patient }: PatientCardProps) => {
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="transition-shadow hover:shadow-md">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-2">
-            <User className="h-5 w-5 text-muted-foreground" />
+            <User className="text-muted-foreground h-5 w-5" />
             <div>
               <CardTitle className="text-lg">{patient.name}</CardTitle>
               <CardDescription>
@@ -38,19 +38,20 @@ const PatientCard = ({ patient }: PatientCardProps) => {
             </div>
           </div>
         </div>
-      </CardHeader>      <CardContent className="space-y-3">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+      </CardHeader>{" "}
+      <CardContent className="space-y-3">
+        <div className="text-muted-foreground flex items-center space-x-2 text-sm">
           <Mail className="h-4 w-4" />
           <span>{patient.email}</span>
         </div>
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center space-x-2 text-sm">
           <Phone className="h-4 w-4" />
           <span>{patient.phoneNumber}</span>
         </div>
         <div className="pt-2">
           <Button asChild size="sm" variant="outline" className="w-full">
             <Link href={`/patients/${patient.id}`}>
-              <Eye className="h-4 w-4 mr-2" />
+              <Eye className="mr-2 h-4 w-4" />
               Ver Detalhes
             </Link>
           </Button>

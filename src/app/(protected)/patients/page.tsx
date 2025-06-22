@@ -22,35 +22,42 @@ const PatientsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  
+
   if (!session?.user) {
     redirect("/authentication");
   }
-  
+
   if (!session.user.clinic) {
     redirect("/clinic-form");
   }
-  
+
   const patients = await db.query.patientsTable.findMany({
     where: eq(patientsTable.clinicId, session.user.clinic.id),
   });
 
   return (
     <PageContainer>
-      <PageHeader>        <PageHeaderContent>
+      <PageHeader>
+        {" "}
+        <PageHeaderContent>
           <PageTitle>Pacientes</PageTitle>
-          <PageDescription>Acesso a detalhes dos pacientes cadastrados</PageDescription>
+          <PageDescription>
+            Acesso a detalhes dos pacientes cadastrados
+          </PageDescription>
         </PageHeaderContent>
         <PageActions>
           <AddPatientButton />
         </PageActions>
-      </PageHeader>      <PageContent>
+      </PageHeader>{" "}
+      <PageContent>
         {patients.length > 0 ? (
           <PatientsDataTable data={patients} />
         ) : (
-          <div className="text-center py-12 text-muted-foreground">
-            <p className="text-lg font-medium">Nenhum paciente cadastrado ainda.</p>
-            <p className="text-sm mt-2">
+          <div className="text-muted-foreground py-12 text-center">
+            <p className="text-lg font-medium">
+              Nenhum paciente cadastrado ainda.
+            </p>
+            <p className="mt-2 text-sm">
               Clique em "Adicionar Paciente" para começar.
             </p>
           </div>

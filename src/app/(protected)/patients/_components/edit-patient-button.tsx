@@ -31,8 +31,8 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="flex items-center px-2 py-1.5 text-sm cursor-pointer w-full">
-          <Edit className="h-4 w-4 mr-2" />
+        <div className="flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
+          <Edit className="mr-2 h-4 w-4" />
           Editar
         </div>
       </DialogTrigger>
@@ -43,7 +43,7 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
             Atualize as informações do paciente.
           </DialogDescription>
         </DialogHeader>
-        <UpsertPatientForm 
+        <UpsertPatientForm
           defaultValues={{
             id: patient.id,
             name: patient.name,
@@ -51,7 +51,7 @@ const EditPatientButton = ({ patient }: EditPatientButtonProps) => {
             phoneNumber: patient.phoneNumber,
             sex: patient.sex,
           }}
-          onSuccess={() => setIsDialogOpen(false)} 
+          onSuccess={() => setIsDialogOpen(false)}
         />
       </DialogContent>
     </Dialog>

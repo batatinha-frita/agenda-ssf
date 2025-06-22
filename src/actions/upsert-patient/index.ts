@@ -34,11 +34,13 @@ export const upsertPatientAction = actionClient
           clinicId: session.user.clinic.id,
         })
         .where(eq(patientsTable.id, id));
-    } else {      // Create new patient
+    } else {
+      // Create new patient
       await db.insert(patientsTable).values({
         ...patientData,
         clinicId: session.user.clinic.id,
-      });    }
+      });
+    }
 
     revalidatePath("/patients");
     if (id) {
