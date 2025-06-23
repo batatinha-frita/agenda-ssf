@@ -11,11 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { appointmentsTable } from "@/db/schema";
+import { appointmentsTable, patientsTable, doctorsTable } from "@/db/schema";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ExternalLink, Calendar } from "lucide-react";
+import { ExternalLink, Calendar, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { DeleteAppointmentAction } from "./delete-appointment-action";
+import { EditAppointmentAction } from "./edit-appointment-action-new";
 
 interface AppointmentsTableProps {
   appointments: (typeof appointmentsTable.$inferSelect & {
@@ -29,9 +31,15 @@ interface AppointmentsTableProps {
       specialty: string;
     };
   })[];
+  patients: (typeof patientsTable.$inferSelect)[];
+  doctors: (typeof doctorsTable.$inferSelect)[];
 }
 
-export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
+export function AppointmentsTable({
+  appointments,
+  patients,
+  doctors,
+}: AppointmentsTableProps) {
   if (appointments.length === 0) {
     return (
       <EmptyState
@@ -49,11 +57,11 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
           <TableRow>
             <TableHead>Paciente</TableHead>
             <TableHead>Data</TableHead>
-            <TableHead>Médico</TableHead>
-            <TableHead>Especialidade</TableHead>
+            <TableHead>Médico</TableHead> <TableHead>Especialidade</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead>Pagamento</TableHead>
-            <TableHead className="w-[50px]"></TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="w-[120px]">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -97,14 +105,71 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     : appointment.paymentStatus === "overdue"
                       ? "Atrasado"
                       : "Em Aberto"}
+                </Badge>{" "}
+              </TableCell>{" "}
+              <TableCell>
+                <Badge
+                  variant={
+                    appointment.appointmentStatus === "confirmed"
+                      ? "default"
+                      : appointment.appointmentStatus === "cancelled"
+                        ? "destructive"
+                        : appointment.appointmentStatus === "completed"
+                          ? "default"
+                          : "secondary"
+                  }
+                  className={
+                    appointment.appointmentStatus === "confirmed"
+                      ? "bg-green-100 text-green-700 hover:bg-green-200"
+                      : appointment.appointmentStatus === "cancelled"
+                        ? ""
+                        : appointment.appointmentStatus === "completed"
+                          ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }
+                >
+                  {appointment.appointmentStatus === "confirmed"
+                    ? "Confirmado"
+                    : appointment.appointmentStatus === "cancelled"
+                      ? "Cancelado"
+                      : appointment.appointmentStatus === "completed"
+                        ? "Realizado"
+                        : "Pendente"}
                 </Badge>
               </TableCell>
               <TableCell>
-                <Link href={`/agendamentos/${appointment.id}`}>
-                  <Button variant="ghost" size="sm">
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex items-center gap-1">
+                  <Link href={`/agendamentos/${appointment.id}`}>
+                    <Button variant="ghost" size="sm">
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </Link>{" "}
+                  <EditAppointmentAction
+                    appointment={{
+                      ...appointment,
+                      patient: patients.find(
+                        (p) => p.id === appointment.patient.id,
+                      )!,
+                      doctor: doctors.find(
+                        (d) => d.id === appointment.doctorId,
+                      )!,
+                    }}
+                    patients={patients}
+                    doctors={doctors}
+                  >
+                    <Button variant="ghost" size="sm">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </EditAppointmentAction>
+                  <DeleteAppointmentAction
+                    appointmentId={appointment.id}
+                    patientName={appointment.patient.name}
+                  >
+                    <Button variant="ghost" size="sm">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </DeleteAppointmentAction>
+                </div>
               </TableCell>
             </TableRow>
           ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -50,12 +50,17 @@ const DeletePatientButton = ({
   };
   return (
     <AlertDialog>
+      {" "}
       <AlertDialogTrigger asChild>
         {children || (
-          <div className="text-destructive flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
-            <Trash className="mr-2 h-4 w-4" />
-            Deletar
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Deletar consulta
+          </Button>
         )}
       </AlertDialogTrigger>
       <AlertDialogContent>

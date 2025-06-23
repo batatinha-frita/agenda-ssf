@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SearchBar } from "@/components/ui/search-bar";
 import { AppointmentsTable } from "./appointments-table";
-import { appointmentsTable } from "@/db/schema";
+import { appointmentsTable, patientsTable, doctorsTable } from "@/db/schema";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -19,10 +19,14 @@ interface AppointmentsClientPageProps {
       specialty: string;
     };
   })[];
+  patients: (typeof patientsTable.$inferSelect)[];
+  doctors: (typeof doctorsTable.$inferSelect)[];
 }
 
 export function AppointmentsClientPage({
   appointments,
+  patients,
+  doctors,
 }: AppointmentsClientPageProps) {
   const [filteredAppointments, setFilteredAppointments] =
     useState(appointments);
@@ -59,7 +63,11 @@ export function AppointmentsClientPage({
         className="mb-6"
         onSearch={handleSearch}
       />
-      <AppointmentsTable appointments={filteredAppointments} />
+      <AppointmentsTable
+        appointments={filteredAppointments}
+        patients={patients}
+        doctors={doctors}
+      />
     </div>
   );
 }

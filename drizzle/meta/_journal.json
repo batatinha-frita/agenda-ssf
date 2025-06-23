@@ -15,6 +15,13 @@
       "when": 1750628132175,
       "tag": "0001_romantic_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750637031674,
+      "tag": "0002_tidy_marvel_zombies",
+      "breakpoints": true
     }
   ]
 }

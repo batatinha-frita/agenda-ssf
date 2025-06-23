@@ -145,6 +145,13 @@ export const paymentStatusEnum = pgEnum("payment_status", [
   "overdue",
 ]);
 
+export const appointmentStatusEnum = pgEnum("appointment_status", [
+  "confirmed",
+  "pending",
+  "cancelled",
+  "completed",
+]);
+
 export const patientsTable = pgTable("patients", {
   id: uuid("id").defaultRandom().primaryKey(),
   clinicId: uuid("clinic_id")
@@ -178,6 +185,9 @@ export const appointmentsTable = pgTable("appointments", {
   paymentStatus: paymentStatusEnum("payment_status")
     .notNull()
     .default("pending"),
+  appointmentStatus: appointmentStatusEnum("appointment_status")
+    .notNull()
+    .default("confirmed"),
   notes: text("notes"),
   clinicId: uuid("clinic_id")
     .notNull()

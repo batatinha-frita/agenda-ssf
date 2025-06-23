@@ -66,47 +66,42 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
     },
     orderBy: (appointments, { desc }) => [desc(appointments.date)],
   });
-
   return (
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <div className="flex items-center space-x-4">
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/patients">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar
-              </Link>
-            </Button>
-            <div>
-              <PageTitle>Detalhes do Paciente</PageTitle>
-              <PageDescription>
-                Informações completas sobre {patient.name}
-              </PageDescription>
-            </div>
-          </div>
-        </PageHeaderContent>{" "}
-        <PageActions>
           <div className="flex items-center space-x-2">
-            <EditPatientButton
-              patient={{
-                id: patient.id,
-                name: patient.name,
-                email: patient.email,
-                phoneNumber: patient.phoneNumber,
-                sex: patient.sex,
-              }}
-            />
-            <DeletePatientButton
-              patientId={patient.id}
-              patientName={patient.name}
-            />
+            <Link href="/patients">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="h-4 w-4" />
+                Voltar
+              </Button>
+            </Link>
           </div>
+          <PageTitle>Detalhes do Paciente</PageTitle>
+          <PageDescription>
+            Informações completas sobre {patient.name}
+          </PageDescription>
+        </PageHeaderContent>
+        <PageActions>
+          <EditPatientButton
+            patient={{
+              id: patient.id,
+              name: patient.name,
+              email: patient.email,
+              phoneNumber: patient.phoneNumber,
+              sex: patient.sex,
+            }}
+          />
+          <DeletePatientButton
+            patientId={patient.id}
+            patientName={patient.name}
+          />{" "}
         </PageActions>
       </PageHeader>
 
       <PageContent>
-        <div className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
           {/* Informações Pessoais */}
           <Card>
             <CardHeader>
@@ -116,73 +111,67 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Nome Completo
-                  </label>
-                  <p className="text-sm font-medium">{patient.name}</p>
-                </div>
-
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Sexo
-                  </label>
-                  <div className="mt-1">
-                    <Badge variant="secondary">
-                      {patient.sex === "male" ? "Masculino" : "Feminino"}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Email
-                  </label>
-                  <div className="mt-1 flex items-center space-x-2">
-                    <Mail className="text-muted-foreground h-4 w-4" />
-                    <p className="text-sm">{patient.email}</p>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Telefone
-                  </label>
-                  <div className="mt-1 flex items-center space-x-2">
-                    <Phone className="text-muted-foreground h-4 w-4" />
-                    <p className="text-sm">{patient.phoneNumber}</p>
-                  </div>
-                </div>
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Nome Completo
+                </label>
+                <p className="text-lg font-semibold">{patient.name}</p>
               </div>
-
-              <Separator />
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Data de Cadastro
-                  </label>
-                  <p className="text-sm">
-                    {new Date(patient.createdAt).toLocaleDateString("pt-BR")}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-muted-foreground text-sm font-medium">
-                    Última Atualização
-                  </label>
-                  <p className="text-sm">
-                    {patient.updatedAt
-                      ? new Date(patient.updatedAt).toLocaleDateString("pt-BR")
-                      : "N/A"}
-                  </p>
-                </div>
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Email
+                </label>
+                <p className="text-sm">{patient.email}</p>
+              </div>
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Telefone
+                </label>
+                <p className="text-sm">{patient.phoneNumber}</p>
+              </div>
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Sexo
+                </label>
+                <p className="text-sm">
+                  {patient.sex === "male" ? "Masculino" : "Feminino"}
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Histórico de Consultas */}
+          {/* Informações de Cadastro */}
           <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Calendar className="h-5 w-5" />
+                <span>Informações de Cadastro</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Data de Cadastro
+                </label>
+                <p className="text-sm">
+                  {new Date(patient.createdAt).toLocaleDateString("pt-BR")}
+                </p>
+              </div>
+              <div>
+                <label className="text-muted-foreground text-sm font-medium">
+                  Última Atualização
+                </label>
+                <p className="text-sm">
+                  {patient.updatedAt
+                    ? new Date(patient.updatedAt).toLocaleDateString("pt-BR")
+                    : "N/A"}
+                </p>
+              </div>{" "}
+            </CardContent>
+          </Card>
+
+          {/* Histórico de Consultas */}
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5" />
@@ -200,39 +189,42 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
               {appointments.length > 0 ? (
                 <div className="space-y-4">
                   {appointments.map((appointment) => (
-                    <div
+                    <Link
                       key={appointment.id}
-                      className="bg-muted/10 rounded-lg border p-4"
+                      href={`/agendamentos/${appointment.id}`}
+                      className="block"
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-1">
-                          <p className="font-medium">
-                            Dr(a). {appointment.doctor.name}
-                          </p>
-                          <p className="text-muted-foreground text-sm">
-                            {appointment.doctor.specialty}
-                          </p>
-                          <p className="text-sm">
-                            {new Date(appointment.date).toLocaleDateString(
-                              "pt-BR",
-                              {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              },
-                            )}
-                          </p>
+                      <div className="bg-muted/10 hover:bg-muted/20 rounded-lg border p-4 transition-colors">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <p className="font-medium">
+                              Dr(a). {appointment.doctor.name}
+                            </p>
+                            <p className="text-muted-foreground text-sm">
+                              {appointment.doctor.specialty}
+                            </p>
+                            <p className="text-sm">
+                              {new Date(appointment.date).toLocaleDateString(
+                                "pt-BR",
+                                {
+                                  weekday: "long",
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                },
+                              )}
+                            </p>
+                          </div>
+                          <Badge variant="outline">
+                            {new Date(appointment.date) > new Date()
+                              ? "Agendada"
+                              : "Realizada"}
+                          </Badge>
                         </div>
-                        <Badge variant="outline">
-                          {new Date(appointment.date) > new Date()
-                            ? "Agendada"
-                            : "Realizada"}
-                        </Badge>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               ) : (

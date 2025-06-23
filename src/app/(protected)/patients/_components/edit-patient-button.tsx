@@ -33,10 +33,10 @@ const EditPatientButton = ({ patient, children }: EditPatientButtonProps) => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         {children || (
-          <div className="flex w-full cursor-pointer items-center px-2 py-1.5 text-sm">
+          <Button variant="outline" size="sm">
             <Edit className="mr-2 h-4 w-4" />
-            Editar
-          </div>
+            Editar paciente
+          </Button>
         )}
       </DialogTrigger>{" "}
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
