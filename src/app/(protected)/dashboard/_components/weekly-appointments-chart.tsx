@@ -36,16 +36,10 @@ const WeeklyAppointmentsChart = ({
   let title: string;
   let chartDays: string[];
   let formatLabel: (date: string) => string;
-
   if (daysDiff <= 7) {
     // Período pequeno (≤ 7 dias): mostrar por dia
-    const isCurrentWeek =
-      daysDiff === 6 &&
-      startDate.day() === 1 &&
-      startDate.isSame(dayjs(), "week");
-    title = isCurrentWeek
-      ? "Agendamentos da Semana Atual"
-      : "Agendamentos do Período";
+    title =
+      daysDiff === 6 ? "Agendamentos da Semana" : "Agendamentos do Período";
 
     chartDays = Array.from({ length: daysDiff + 1 }).map((_, i) =>
       startDate.add(i, "day").format("YYYY-MM-DD"),

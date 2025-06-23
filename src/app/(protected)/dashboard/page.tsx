@@ -46,8 +46,13 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   }
   const { from, to } = await searchParams;
   if (!from || !to) {
+    // Calcular domingo da semana atual (início da semana)
+    const today = dayjs();
+    const startOfWeek = today.startOf("week"); // Domingo
+    const endOfWeek = startOfWeek.add(6, "days"); // Sábado
+
     redirect(
-      `/dashboard?from=${dayjs().format("YYYY-MM-DD")}&to=${dayjs().add(1, "month").format("YYYY-MM-DD")}`,
+      `/dashboard?from=${startOfWeek.format("YYYY-MM-DD")}&to=${endOfWeek.format("YYYY-MM-DD")}`,
     );
   }
   const {

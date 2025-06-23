@@ -1,7 +1,6 @@
 "use client";
 
-import { addMonths, format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import dayjs from "dayjs";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import * as React from "react";
@@ -25,8 +24,9 @@ export function DatePicker({
   );
   const [to, setTo] = useQueryState(
     "to",
-    parseAsIsoDate.withDefault(addMonths(new Date(), 1)),
+    parseAsIsoDate.withDefault(dayjs().add(1, "month").toDate()),
   );
+
   const handleDateSelect = (dateRange: DateRange | undefined) => {
     if (dateRange?.from) {
       setFrom(dateRange.from, {
@@ -39,10 +39,44 @@ export function DatePicker({
       });
     }
   };
+
+  const handlePresetSelect = (preset: { from: Date; to: Date }) => {
+    setFrom(preset.from, { shallow: false });
+    setTo(preset.to, { shallow: false });
+  };
+
   const date = {
     from,
     to,
   };
+
+  const presets = [
+    {
+      label: "Hoje",
+      from: new Date(),
+      to: new Date(),
+    },
+    {
+      label: "Ontem",
+      from: dayjs().subtract(1, "day").toDate(),
+      to: dayjs().subtract(1, "day").toDate(),
+    },
+    {
+      label: "Esta semana",
+      from: dayjs().startOf("week").toDate(), // Domingo
+      to: dayjs().startOf("week").add(6, "days").toDate(), // Sábado
+    },
+    {
+      label: "Últimos 7 dias",
+      from: dayjs().subtract(6, "days").toDate(),
+      to: new Date(),
+    },
+    {
+      label: "Este mês",
+      from: dayjs().startOf("month").toDate(),
+      to: dayjs().endOf("month").toDate(),
+    },
+  ];
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -59,23 +93,37 @@ export function DatePicker({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y", {
-                    locale: ptBR,
-                  })}{" "}
-                  -{" "}
-                  {format(date.to, "LLL dd, y", {
-                    locale: ptBR,
-                  })}
+                  {dayjs(date.from).format("MMM DD, YYYY")} -{" "}
+                  {dayjs(date.to).format("MMM DD, YYYY")}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                dayjs(date.from).format("MMM DD, YYYY")
               )
             ) : (
               <span>Pick a date</span>
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent
+          className="flex w-auto flex-col space-y-2 p-2"
+          align="start"
+        >
+          <div className="flex flex-col space-y-1">
+            <h4 className="leading-none font-medium">Períodos rápidos</h4>
+            <div className="grid grid-cols-2 gap-2">
+              {presets.map((preset) => (
+                <Button
+                  key={preset.label}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start"
+                  onClick={() => handlePresetSelect(preset)}
+                >
+                  {preset.label}
+                </Button>
+              ))}
+            </div>
+          </div>{" "}
           <Calendar
             initialFocus
             mode="range"
@@ -83,7 +131,6 @@ export function DatePicker({
             selected={date}
             onSelect={handleDateSelect}
             numberOfMonths={2}
-            locale={ptBR}
           />
         </PopoverContent>
       </Popover>
