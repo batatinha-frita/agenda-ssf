@@ -28,7 +28,7 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
-    patientsData,
+    weeklyAppointmentsData,
   ] = await Promise.all([
     db
       .select({
@@ -59,7 +59,13 @@ export const getDashboard = async ({ from, to, session }: Params) => {
         total: count(),
       })
       .from(patientsTable)
-      .where(eq(patientsTable.clinicId, session.user.clinic.id)),
+      .where(
+        and(
+          eq(patientsTable.clinicId, session.user.clinic.id),
+          gte(patientsTable.createdAt, new Date(from)),
+          lte(patientsTable.createdAt, new Date(to)),
+        ),
+      ),
     db
       .select({
         total: count(),
@@ -151,23 +157,22 @@ export const getDashboard = async ({ from, to, session }: Params) => {
         ),
       )
       .groupBy(sql`DATE(${appointmentsTable.date})`)
-      .orderBy(sql`DATE(${appointmentsTable.date})`),
-    // Dados dos pacientes para o gráfico
+      .orderBy(sql`DATE(${appointmentsTable.date})`), // Dados dos agendamentos da semana atual para o gráfico
     db
       .select({
-        date: sql<string>`DATE(${patientsTable.createdAt})`.as("date"),
-        patients: count(patientsTable.id),
+        date: sql<string>`DATE(${appointmentsTable.date})`.as("date"),
+        appointments: count(appointmentsTable.id),
       })
-      .from(patientsTable)
+      .from(appointmentsTable)
       .where(
         and(
-          eq(patientsTable.clinicId, session.user.clinic.id),
-          gte(patientsTable.createdAt, chartStartDate),
-          lte(patientsTable.createdAt, chartEndDate),
+          eq(appointmentsTable.clinicId, session.user.clinic.id),
+          gte(appointmentsTable.date, chartStartDate),
+          lte(appointmentsTable.date, chartEndDate),
         ),
       )
-      .groupBy(sql`DATE(${patientsTable.createdAt})`)
-      .orderBy(sql`DATE(${patientsTable.createdAt})`),
+      .groupBy(sql`DATE(${appointmentsTable.date})`)
+      .orderBy(sql`DATE(${appointmentsTable.date})`),
   ]);
   return {
     totalRevenue,
@@ -178,6 +183,6 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
-    patientsData,
+    weeklyAppointmentsData,
   };
 };

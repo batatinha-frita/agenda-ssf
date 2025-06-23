@@ -20,8 +20,7 @@ import { doctorsTable, patientsTable } from "@/db/schema";
 
 import { auth } from "@/lib/auth";
 
-import AppointmentsChart from "./_components/appointments-chart";
-import PatientsChart from "./_components/patients-chart";
+import WeeklyAppointmentsChart from "./_components/weekly-appointments-chart";
 import { DatePicker } from "./_components/date-picker";
 import StatsCards from "./_components/stats-cards";
 import TopDoctors from "./_components/top-doctors";
@@ -60,7 +59,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
-    patientsData,
+    weeklyAppointmentsData,
   } = await getDashboard({
     from,
     to,
@@ -109,8 +108,13 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
 
           {/* Gráfico de Pacientes + Top Médicos */}
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+            {" "}
             <div className="lg:col-span-2">
-              <PatientsChart patientsData={patientsData} />
+              <WeeklyAppointmentsChart
+                weeklyAppointmentsData={weeklyAppointmentsData}
+                from={from}
+                to={to}
+              />
             </div>
             <div className="lg:col-span-1">
               <TopDoctors doctors={topDoctors} />

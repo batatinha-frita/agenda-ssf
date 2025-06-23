@@ -5,7 +5,6 @@ import { Manrope } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Toaster } from "@/components/ui/sonner";
-// import { ReactQueryProvider } from "@/providers/react-query";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -25,9 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${manrope.variable} antialiased`}>
-        {/* <ReactQueryProvider> */}
         <NuqsAdapter>{children}</NuqsAdapter>
-        {/* </ReactQueryProvider> */}
         <Toaster position="bottom-center" richColors theme="light" />
       </body>
     </html>

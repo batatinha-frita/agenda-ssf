@@ -33,7 +33,7 @@ const StatsCards = ({
       icon: CalendarIcon,
     },
     {
-      title: "Pacientes",
+      title: "Novos Pacientes",
       value: totalPatients.toString(),
       icon: UserIcon,
     },
@@ -48,15 +48,17 @@ const StatsCards = ({
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (
-          <Card key={stat.title} className="p-3">
+          <Card key={stat.title} className="p-5">
             <CardContent className="p-0">
-              <div className="flex items-center gap-2">
-                <div className="bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full">
-                  <Icon className="text-primary h-3 w-3" />
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                  <Icon className="text-primary h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-xs">{stat.title}</p>
-                  <p className="text-sm font-bold">{stat.value}</p>
+                  <p className="text-muted-foreground text-base">
+                    {stat.title}
+                  </p>
+                  <p className="text-xl font-bold">{stat.value}</p>
                 </div>
               </div>
             </CardContent>
