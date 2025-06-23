@@ -1,0 +1,334 @@
+/* Estilos para impressão de relatórios */
+@media print {
+  /* Configurações gerais */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+  /* Ocultar elementos que não devem aparecer na impressão */
+  .no-print,
+  .sidebar,
+  .header,
+  .navigation,
+  nav,
+  aside,
+  [role="navigation"],
+  [data-testid="sidebar"],
+  button:not(.print-button),
+  .dropdown-menu,
+  .tooltip,
+  .popover {
+    display: none !important;
+  }
+
+  /* Mostrar elementos específicos para impressão */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Layout principal */
+  .print-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    background: white !important;
+  }
+
+  /* Cabeçalho */
+  .print-header {
+    margin-bottom: 30px !important;
+  }
+
+  .print-header h1 {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  .print-header h2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+  }
+
+  /* Quebras de página */
+  .page-break {
+    page-break-before: always !important;
+  }
+
+  .page-break-after {
+    page-break-after: always !important;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid !important;
+  }
+
+  /* Cards e containers */
+  .card {
+    border: 1px solid #333 !important;
+    border-radius: 4px !important;
+    margin-bottom: 20px !important;
+    padding: 15px !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  .card-header {
+    border-bottom: 1px solid #ddd !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Gráficos */
+  .chart-container {
+    max-height: 400px !important;
+    width: 100% !important;
+    background: white !important;
+    border: 1px solid #ddd !important;
+    margin: 15px 0 !important;
+  }
+
+  .recharts-wrapper {
+    background: white !important;
+  }
+
+  /* Estilos específicos para gráficos na impressão */
+  .donut-chart {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .donut-chart svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .chart-legend {
+    page-break-inside: avoid;
+  }
+
+  /* Tabelas */
+  .table-container {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 11px !important;
+    margin: 15px 0 !important;
+  }
+
+  thead {
+    background: #f5f5f5 !important;
+  }
+
+  th,
+  td {
+    border: 1px solid #333 !important;
+    padding: 8px 6px !important;
+    text-align: left !important;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  th {
+    font-weight: bold !important;
+    background: #f0f0f0 !important;
+  }
+
+  /* Badges e status */
+  .badge {
+    border: 1px solid #333 !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    font-size: 10px !important;
+    font-weight: normal !important;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  /* Status específicos */
+  .status-paid {
+    background: #e8f5e8 !important;
+    border-color: #4caf50 !important;
+  }
+
+  .status-pending {
+    background: #fff3cd !important;
+    border-color: #ffc107 !important;
+  }
+
+  .status-overdue {
+    background: #f8d7da !important;
+    border-color: #dc3545 !important;
+    font-weight: bold !important;
+  }
+
+  /* Grid layouts */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    margin-bottom: 15px !important;
+  }
+
+  /* Summary cards para relatórios financeiros */
+  .financial-summary {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: 30px !important;
+    gap: 15px !important;
+  }
+
+  .summary-card {
+    flex: 1 !important;
+    border: 2px solid #333 !important;
+    padding: 15px !important;
+    text-align: center !important;
+    background: white !important;
+  }
+
+  .summary-card h3 {
+    font-size: 14px !important;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+    color: #000 !important;
+  }
+
+  .summary-card .amount {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  /* Textos e títulos */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  p,
+  span,
+  div {
+    color: #000 !important;
+  }
+
+  .text-muted-foreground {
+    color: #666 !important;
+  }
+
+  .text-destructive {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  /* Rodapé */
+  .print-footer {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    right: 20px !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    color: #666 !important;
+    border-top: 1px solid #ddd !important;
+    padding-top: 10px !important;
+  }
+
+  /* Margens da página */
+  @page {
+    margin: 2cm 1.5cm;
+    size: A4;
+  }
+
+  /* Otimizações específicas */
+  .overflow-hidden {
+    overflow: visible !important;
+  }
+
+  .relative {
+    position: static !important;
+  }
+
+  .absolute {
+    position: static !important;
+  }
+  .fixed {
+    position: static !important;
+  }
+}
+
+/* Estilos para tela que melhoram a visualização antes da impressão */
+@media screen {
+  .print-only {
+    display: none;
+  }
+
+  /* Layout fixo para relatórios - Tela fixa com scroll apenas nas tabelas */
+  .reports-layout {
+    height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reports-chart-section {
+    flex-shrink: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .reports-tables-section {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .reports-tabs-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reports-tabs-list {
+    flex-shrink: 0;
+  }
+
+  .reports-tabs-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  /* Estilização da scrollbar */
+  .reports-tabs-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .reports-tabs-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+
+  .reports-tabs-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  .reports-tabs-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}

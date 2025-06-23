@@ -6,6 +6,7 @@ import {
   LogOut,
   Stethoscope,
   UsersRound,
+  FileText,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,6 +54,11 @@ const items = [
     url: "/patients",
     icon: UsersRound,
   },
+  {
+    title: "Relatórios",
+    url: "/reports",
+    icon: FileText,
+  },
 ];
 
 export function AppSidebar() {
@@ -79,9 +85,13 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {" "}
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith(item.url)}
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
