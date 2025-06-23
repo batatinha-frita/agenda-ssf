@@ -28,6 +28,7 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    patientsData,
   ] = await Promise.all([
     db
       .select({
@@ -105,13 +106,32 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     db.query.appointmentsTable.findMany({
       where: and(
         eq(appointmentsTable.clinicId, session.user.clinic.id),
-        gte(appointmentsTable.date, dayjs().startOf("day").toDate()),
-        lte(appointmentsTable.date, dayjs().endOf("day").toDate()),
+        gte(
+          appointmentsTable.date,
+          dayjs().subtract(7, "days").startOf("day").toDate(),
+        ),
+        lte(
+          appointmentsTable.date,
+          dayjs().add(7, "days").endOf("day").toDate(),
+        ),
       ),
       with: {
-        patient: true,
-        doctor: true,
+        patient: {
+          columns: {
+            id: true,
+            name: true,
+          },
+        },
+        doctor: {
+          columns: {
+            id: true,
+            name: true,
+            specialty: true,
+          },
+        },
       },
+      orderBy: (appointments, { desc }) => [desc(appointments.date)],
+      limit: 20,
     }),
     db
       .select({
@@ -132,6 +152,22 @@ export const getDashboard = async ({ from, to, session }: Params) => {
       )
       .groupBy(sql`DATE(${appointmentsTable.date})`)
       .orderBy(sql`DATE(${appointmentsTable.date})`),
+    // Dados dos pacientes para o gráfico
+    db
+      .select({
+        date: sql<string>`DATE(${patientsTable.createdAt})`.as("date"),
+        patients: count(patientsTable.id),
+      })
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.clinicId, session.user.clinic.id),
+          gte(patientsTable.createdAt, chartStartDate),
+          lte(patientsTable.createdAt, chartEndDate),
+        ),
+      )
+      .groupBy(sql`DATE(${patientsTable.createdAt})`)
+      .orderBy(sql`DATE(${patientsTable.createdAt})`),
   ]);
   return {
     totalRevenue,
@@ -142,5 +178,6 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    patientsData,
   };
 };

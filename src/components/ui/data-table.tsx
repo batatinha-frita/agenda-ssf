@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchPlaceholder?: string;
   searchKey?: string;
+  showPagination?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,6 +45,7 @@ export function DataTable<TData, TValue>({
   data,
   searchPlaceholder = "Pesquisar...",
   searchKey,
+  showPagination = true,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -167,42 +169,45 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
-          </TableBody>
+          </TableBody>{" "}
         </Table>
       </div>
       {/* Paginação */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="text-muted-foreground text-sm">
-          {table.getFilteredSelectedRowModel().rows.length > 0 && (
-            <span>
-              {table.getFilteredSelectedRowModel().rows.length} de{" "}
-              {table.getFilteredRowModel().rows.length} linha(s) selecionada(s).
-            </span>
-          )}
+      {showPagination && (
+        <div className="flex items-center justify-between space-x-2 py-4">
+          <div className="text-muted-foreground text-sm">
+            {table.getFilteredSelectedRowModel().rows.length > 0 && (
+              <span>
+                {table.getFilteredSelectedRowModel().rows.length} de{" "}
+                {table.getFilteredRowModel().rows.length} linha(s)
+                selecionada(s).
+              </span>
+            )}
+          </div>
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">
+              Página {table.getState().pagination.pageIndex + 1} de{" "}
+              {table.getPageCount()}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Próxima
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">
-            Página {table.getState().pagination.pageIndex + 1} de{" "}
-            {table.getPageCount()}
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Próxima
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

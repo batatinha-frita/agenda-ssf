@@ -18,30 +18,30 @@ interface TopDoctorsProps {
 export default function TopDoctors({ doctors }: TopDoctorsProps) {
   return (
     <Card className="mx-auto w-full">
-      <CardContent>
-        <div className="mb-8 flex items-center justify-between">
+      <CardContent className="p-4">
+        {" "}
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Stethoscope className="text-muted-foreground" />
-            <CardTitle className="text-base">Médicos</CardTitle>
+            <Stethoscope className="text-muted-foreground h-4 w-4" />
+            <CardTitle className="text-base">Top Médicos</CardTitle>
           </div>
           <Link href="/doctors">
             <Button
               variant="ghost"
               size="sm"
-              className="text-muted-foreground hover:text-primary text-sm"
+              className="text-muted-foreground hover:text-primary text-xs"
             >
               Ver todos
             </Button>
           </Link>
-        </div>
-
-        {/* Doctors List */}
-        <div className="space-y-6">
-          {doctors.map((doctor) => (
+        </div>{" "}
+        {/* Lista vertical de médicos */}
+        <div className="space-y-2">
+          {doctors.slice(0, 5).map((doctor) => (
             <div key={doctor.id} className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-gray-100 text-lg font-medium text-gray-600">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-gray-100 text-sm font-medium text-gray-600">
                     {doctor.name
                       .split(" ")
                       .map((n) => n[0])
@@ -50,14 +50,14 @@ export default function TopDoctors({ doctors }: TopDoctorsProps) {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="text-sm">{doctor.name}</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <h3 className="text-xs font-medium">{doctor.name}</h3>
+                  <p className="text-muted-foreground text-xs">
                     {doctor.specialty}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-muted-foreground text-sm font-medium">
+                <span className="text-muted-foreground text-xs font-medium">
                   {doctor.appointments} agend.
                 </span>
               </div>

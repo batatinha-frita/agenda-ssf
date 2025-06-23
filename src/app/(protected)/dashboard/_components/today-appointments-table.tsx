@@ -29,11 +29,14 @@ export function TodayAppointmentsTable({
 }: TodayAppointmentsTableProps) {
   const appointmentsColumns = createAppointmentsColumns({ patients, doctors });
   return (
-    <DataTable
-      columns={appointmentsColumns}
-      data={appointments}
-      searchPlaceholder="Pesquisar agendamentos..."
-      searchKey="patientName"
-    />
+    <div className="max-h-[300px] overflow-auto">
+      <DataTable
+        columns={appointmentsColumns}
+        data={appointments}
+        searchPlaceholder="Pesquisar agendamentos..."
+        searchKey="patientName"
+        showPagination={false}
+      />
+    </div>
   );
 }

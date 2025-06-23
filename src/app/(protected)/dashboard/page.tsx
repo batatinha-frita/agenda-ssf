@@ -21,6 +21,7 @@ import { doctorsTable, patientsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AppointmentsChart from "./_components/appointments-chart";
+import PatientsChart from "./_components/patients-chart";
 import { DatePicker } from "./_components/date-picker";
 import StatsCards from "./_components/stats-cards";
 import TopDoctors from "./_components/top-doctors";
@@ -59,6 +60,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    patientsData,
   } = await getDashboard({
     from,
     to,
@@ -92,48 +94,53 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         <PageActions>
           <DatePicker />
         </PageActions>
-      </PageHeader>
+      </PageHeader>{" "}
       <PageContent>
-        <StatsCards
-          totalRevenue={totalRevenue.total ? Number(totalRevenue.total) : null}
-          totalAppointments={totalAppointments.total}
-          totalPatients={totalPatients.total}
-          totalDoctors={totalDoctors.total}
-        />
+        <div className="space-y-3">
+          {/* Cards de Estatísticas */}
+          <StatsCards
+            totalRevenue={
+              totalRevenue.total ? Number(totalRevenue.total) : null
+            }
+            totalAppointments={totalAppointments.total}
+            totalPatients={totalPatients.total}
+            totalDoctors={totalDoctors.total}
+          />
 
-        {/* Primeira linha: Gráfico + Top Médicos */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <AppointmentsChart dailyAppointmentsData={dailyAppointmentsData} />
+          {/* Gráfico de Pacientes + Top Médicos */}
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <PatientsChart patientsData={patientsData} />
+            </div>
+            <div className="lg:col-span-1">
+              <TopDoctors doctors={topDoctors} />
+            </div>
           </div>
-          <div className="lg:col-span-1">
-            <TopDoctors doctors={topDoctors} />
-          </div>
-        </div>
 
-        {/* Segunda linha: Agendamentos de Hoje + Top Especialidades */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <Calendar className="text-muted-foreground" />
-                  <CardTitle className="text-base">
-                    Agendamentos de hoje
-                  </CardTitle>
-                </div>{" "}
-              </CardHeader>
-              <CardContent>
-                <TodayAppointmentsTable
-                  appointments={todayAppointments}
-                  patients={patients}
-                  doctors={doctors}
-                />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="lg:col-span-1">
-            <TopSpecialties topSpecialties={topSpecialties} />
+          {/* Agendamentos Recentes + Top Especialidades */}
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <Card className="h-fit">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="text-muted-foreground h-4 w-4" />
+                    <CardTitle className="text-sm">
+                      Agendamentos Recentes
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <TodayAppointmentsTable
+                    appointments={todayAppointments}
+                    patients={patients}
+                    doctors={doctors}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            <div className="lg:col-span-1">
+              <TopSpecialties topSpecialties={topSpecialties} />
+            </div>
           </div>
         </div>
       </PageContent>
