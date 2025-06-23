@@ -16,8 +16,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ExternalLink, Calendar, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { DeleteAppointmentAction } from "./delete-appointment-action";
-import { EditAppointmentAction } from "./edit-appointment-action-new";
+import { DeleteAppointmentButton } from "./delete-appointment-button";
+import { UpsertAppointmentAction } from "./upsert-appointment-action";
 
 interface AppointmentsTableProps {
   appointments: (typeof appointmentsTable.$inferSelect & {
@@ -54,10 +54,12 @@ export function AppointmentsTable({
     <div className="rounded-md border">
       <Table>
         <TableHeader>
+          {" "}
           <TableRow>
             <TableHead>Paciente</TableHead>
             <TableHead>Data</TableHead>
-            <TableHead>Médico</TableHead> <TableHead>Especialidade</TableHead>
+            <TableHead>Médico</TableHead>
+            <TableHead>Especialidade</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead>Pagamento</TableHead>
             <TableHead>Status</TableHead>
@@ -139,12 +141,12 @@ export function AppointmentsTable({
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
-                  <Link href={`/agendamentos/${appointment.id}`}>
+                  <Link href={`/appointments/${appointment.id}`}>
                     <Button variant="ghost" size="sm">
                       <ExternalLink className="h-4 w-4" />
                     </Button>
                   </Link>{" "}
-                  <EditAppointmentAction
+                  <UpsertAppointmentAction
                     appointment={{
                       ...appointment,
                       patient: patients.find(
@@ -160,15 +162,15 @@ export function AppointmentsTable({
                     <Button variant="ghost" size="sm">
                       <Edit className="h-4 w-4" />
                     </Button>
-                  </EditAppointmentAction>
-                  <DeleteAppointmentAction
+                  </UpsertAppointmentAction>
+                  <DeleteAppointmentButton
                     appointmentId={appointment.id}
                     patientName={appointment.patient.name}
                   >
                     <Button variant="ghost" size="sm">
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </DeleteAppointmentAction>
+                  </DeleteAppointmentButton>
                 </div>
               </TableCell>
             </TableRow>

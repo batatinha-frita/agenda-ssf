@@ -45,12 +45,10 @@ export const deleteAppointment = actionClient
 
     if (appointment.clinicId !== userClinic.clinic.id) {
       throw new Error("Você não tem permissão para deletar este agendamento.");
-    }
-
-    // Deletar o agendamento
+    } // Deletar o agendamento
     await db
       .delete(appointmentsTable)
       .where(eq(appointmentsTable.id, appointmentId));
 
-    revalidatePath("/agendamentos");
+    revalidatePath("/appointments");
   });

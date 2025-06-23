@@ -1,9 +1,12 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,38 +20,54 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteAppointment } from "@/actions/delete-appointment";
 
-interface DeleteAppointmentActionProps {
+interface DeleteAppointmentButtonProps {
   appointmentId: string;
   patientName?: string;
-  children: ReactNode;
+  children?: ReactNode;
+  redirectAfterDelete?: boolean;
 }
 
-export function DeleteAppointmentAction({
+export function DeleteAppointmentButton({
   appointmentId,
   patientName,
   children,
-}: DeleteAppointmentActionProps) {
+  redirectAfterDelete = false,
+}: DeleteAppointmentButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const deleteAppointmentAction = useAction(deleteAppointment, {
     onSuccess: () => {
       toast.success("Consulta deletada com sucesso!");
       setIsOpen(false);
-      // Recarregar a página para mostrar os dados atualizados
-      window.location.reload();
+
+      if (redirectAfterDelete) {
+        router.push("/appointments");
+      } else {
+        // Recarregar a página para mostrar os dados atualizados
+        window.location.reload();
+      }
     },
     onError: ({ error }) => {
       toast.error(error.serverError || "Erro ao deletar consulta.");
     },
   });
-
   const handleDelete = () => {
     deleteAppointmentAction.execute({ appointmentId });
   };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      {children ? (
+        <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      ) : (
+        <AlertDialogTrigger>
+          <Button variant="destructive" size="sm">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Deletar consulta
+          </Button>
+        </AlertDialogTrigger>
+      )}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Deletar consulta</AlertDialogTitle>

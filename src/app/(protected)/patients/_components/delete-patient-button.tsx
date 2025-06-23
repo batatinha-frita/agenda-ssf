@@ -50,7 +50,6 @@ const DeletePatientButton = ({
   };
   return (
     <AlertDialog>
-      {" "}
       <AlertDialogTrigger asChild>
         {children || (
           <Button
@@ -59,7 +58,7 @@ const DeletePatientButton = ({
             className="text-destructive hover:text-destructive"
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            Deletar consulta
+            Deletar paciente
           </Button>
         )}
       </AlertDialogTrigger>

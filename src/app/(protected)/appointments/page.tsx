@@ -2,17 +2,15 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { PageContainer } from "@/components/ui/page-container";
 import { db } from "@/db";
 import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { CalendarPlus } from "lucide-react";
-import { AddAppointmentButton } from "./_components/add-appointment-button";
+
+import { UpsertAppointmentButton } from "./_components/upsert-appointment-button";
 import { AppointmentsClientPage } from "./_components/appointments-client-page";
 
-export default async function AgendamentosPage() {
+const AppointmentsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -66,15 +64,17 @@ export default async function AgendamentosPage() {
             pacientes
           </p>
         </div>
-        <AddAppointmentButton patients={patients} doctors={doctors} />
+        <UpsertAppointmentButton patients={patients} doctors={doctors} />
       </div>{" "}
       <div className="mt-8">
         <AppointmentsClientPage
           appointments={appointments}
           patients={patients}
           doctors={doctors}
-        />
+        />{" "}
       </div>
     </PageContainer>
   );
-}
+};
+
+export default AppointmentsPage;

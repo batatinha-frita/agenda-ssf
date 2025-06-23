@@ -1,31 +1,38 @@
 "use client";
 
+import { Plus, Edit } from "lucide-react";
 import { useState } from "react";
-import { Edit } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { UpsertAppointmentForm } from "./upsert-appointment-form";
 import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
 
-interface EditAppointmentButtonProps {
-  appointment: typeof appointmentsTable.$inferSelect & {
+import { UpsertAppointmentForm } from "./upsert-appointment-form";
+
+interface UpsertAppointmentButtonProps {
+  appointment?: typeof appointmentsTable.$inferSelect & {
     patient: typeof patientsTable.$inferSelect;
     doctor: typeof doctorsTable.$inferSelect;
   };
   patients: (typeof patientsTable.$inferSelect)[];
   doctors: (typeof doctorsTable.$inferSelect)[];
+  children?: React.ReactNode;
 }
 
-export function EditAppointmentButton({
+export function UpsertAppointmentButton({
   appointment,
   patients,
   doctors,
-}: EditAppointmentButtonProps) {
+  children,
+}: UpsertAppointmentButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
+
+  const isEditing = !!appointment;
 
   const handleSuccess = () => {
     setIsOpen(false);
+    setResetKey((prev) => prev + 1);
     // Recarregar a página para mostrar os dados atualizados
     window.location.reload();
   };
@@ -33,12 +40,24 @@ export function EditAppointmentButton({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Edit className="mr-2 h-4 w-4" />
-          Editar consulta
-        </Button>
+        {children || (
+          <Button variant={isEditing ? "outline" : "default"} size="sm">
+            {isEditing ? (
+              <>
+                <Edit className="mr-2 h-4 w-4" />
+                Editar consulta
+              </>
+            ) : (
+              <>
+                <Plus className="mr-2 h-4 w-4" />
+                Adicionar consulta
+              </>
+            )}
+          </Button>
+        )}
       </DialogTrigger>
       <UpsertAppointmentForm
+        key={resetKey}
         appointment={appointment}
         patients={patients}
         doctors={doctors}

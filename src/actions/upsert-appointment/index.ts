@@ -101,6 +101,6 @@ export const upsertAppointment = actionClient
         });
       }
 
-      revalidatePath("/agendamentos");
+      revalidatePath("/appointments");
     },
   );

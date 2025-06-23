@@ -35,7 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { db } from "@/db";
 import { appointmentsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { EditAppointmentButton } from "../_components/edit-appointment-button";
+import { UpsertAppointmentButton } from "../_components/upsert-appointment-button";
 import { DeleteAppointmentButton } from "../_components/delete-appointment-button";
 
 interface AppointmentDetailsPageProps {
@@ -86,7 +86,7 @@ const AppointmentDetailsPage = async ({
       <PageHeader>
         <PageHeaderContent>
           <div className="flex items-center space-x-2">
-            <Link href="/agendamentos">
+            <Link href="/appointments">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="h-4 w-4" />
                 Voltar
@@ -99,12 +99,15 @@ const AppointmentDetailsPage = async ({
           </PageDescription>
         </PageHeaderContent>{" "}
         <PageActions>
-          <EditAppointmentButton
+          <UpsertAppointmentButton
             appointment={appointment}
             patients={patients}
             doctors={doctors}
           />
-          <DeleteAppointmentButton appointmentId={appointment.id} />
+          <DeleteAppointmentButton
+            appointmentId={appointment.id}
+            redirectAfterDelete={true}
+          />
         </PageActions>
       </PageHeader>
 

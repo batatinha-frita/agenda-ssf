@@ -92,11 +92,11 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
               phoneNumber: patient.phoneNumber,
               sex: patient.sex,
             }}
-          />
+          />{" "}
           <DeletePatientButton
             patientId={patient.id}
             patientName={patient.name}
-          />{" "}
+          />
         </PageActions>
       </PageHeader>
 
@@ -166,7 +166,7 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
                     ? new Date(patient.updatedAt).toLocaleDateString("pt-BR")
                     : "N/A"}
                 </p>
-              </div>{" "}
+              </div>
             </CardContent>
           </Card>
 
@@ -191,7 +191,7 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
                   {appointments.map((appointment) => (
                     <Link
                       key={appointment.id}
-                      href={`/agendamentos/${appointment.id}`}
+                      href={`/appointments/${appointment.id}`}
                       className="block"
                     >
                       <div className="bg-muted/10 hover:bg-muted/20 rounded-lg border p-4 transition-colors">
