@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, count, desc, gte, sql } from "drizzle-orm";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/page-container";
 import { getDashboard } from "@/data/get-dashboard";
 import { db } from "@/db";
-import { doctorsTable, patientsTable } from "@/db/schema";
+import { doctorsTable, patientsTable, appointmentsTable } from "@/db/schema";
 
 import { auth } from "@/lib/auth";
 
@@ -97,7 +97,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         </PageHeaderContent>
         <PageActions>
           <DatePicker />
-        </PageActions>{" "}
+        </PageActions>
       </PageHeader>
       <PageContent>
         <div className="space-y-3">
@@ -110,7 +110,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalPatients={totalPatients.total}
             totalDoctors={totalDoctors.total}
           />
-          {/* Gráfico de Pacientes + Top Médicos */}{" "}
+          {/* Gráfico de Pacientes + Top Médicos */}
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <WeeklyAppointmentsChart
@@ -145,7 +145,9 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
               </Card>
             </div>
             <div className="lg:col-span-1">
-              <TopSpecialties topSpecialties={topSpecialties} />
+              <div className="space-y-3">
+                <TopSpecialties topSpecialties={topSpecialties} />
+              </div>
             </div>
           </div>
         </div>

@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      {/* Filtros e Controles */}{" "}
+      {/* Filtros e Controles */}
       <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center space-x-2">
           {searchKey && (
@@ -169,7 +169,7 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
-          </TableBody>{" "}
+          </TableBody>
         </Table>
       </div>
       {/* Paginação */}

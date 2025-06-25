@@ -30,7 +30,6 @@
   .print-only {
     display: block !important;
   }
-
   /* Layout principal */
   .print-container {
     width: 100% !important;
@@ -38,6 +37,14 @@
     margin: 0 !important;
     padding: 20px !important;
     background: white !important;
+  }
+
+  /* Garantir largura consistente para todos os elementos */
+  .reports-layout,
+  .reports-chart-section,
+  .reports-tables-section {
+    width: 100% !important;
+    max-width: none !important;
   }
 
   /* Cabeçalho */
@@ -113,7 +120,6 @@
   .chart-legend {
     page-break-inside: avoid;
   }
-
   /* Tabelas */
   .table-container {
     overflow: visible !important;
@@ -124,6 +130,65 @@
     border-collapse: collapse !important;
     font-size: 11px !important;
     margin: 15px 0 !important;
+  }
+  /* Tabelas de relatórios específicas */
+  .report-table-wrapper {
+    overflow: visible !important;
+    width: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .report-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 11px !important;
+    margin: 15px 0 !important;
+  }
+
+  .report-table th,
+  .report-table td {
+    border: 1px solid #333 !important;
+    padding: 8px 6px !important;
+    text-align: left !important;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  .report-table th {
+    font-weight: bold !important;
+    background: #f0f0f0 !important;
+  }
+
+  .report-table tbody tr:hover {
+    background: white !important;
+  }
+
+  /* Cabeçalhos de seções */
+  .report-section-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .report-section-title {
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0 !important;
+  }
+
+  .report-search-wrapper {
+    display: none !important;
+  }
+
+  .report-empty-state {
+    text-align: center !important;
+    padding: 20px !important;
+    color: #666 !important;
+    font-style: italic !important;
   }
 
   thead {
@@ -312,6 +377,88 @@
     overflow-y: auto;
     padding-right: 0.5rem;
   }
+  /* Alinhamento e largura consistente para elementos de relatórios */
+  .print-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Forçar largura consistente em todos os elementos de relatório */
+  .reports-layout,
+  .reports-chart-section,
+  .reports-tables-section,
+  .report-table-wrapper,
+  .chart-container,
+  .summary-cards,
+  .financial-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .report-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .report-table th,
+  .report-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .report-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .report-table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+
+  /* Cabeçalhos de seção com alinhamento consistente */
+  .report-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0;
+    width: 100%;
+  }
+
+  .report-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+
+  .report-search-wrapper {
+    position: relative;
+    max-width: 320px;
+  }
+
+  .report-search-input {
+    padding-left: 2.5rem;
+  }
+
+  .report-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+    font-style: italic;
+  }
 
   /* Estilização da scrollbar */
   .reports-tabs-content::-webkit-scrollbar {
@@ -327,8 +474,29 @@
     background: #cbd5e1;
     border-radius: 3px;
   }
-
   .reports-tabs-content::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
+  }
+
+  /* Ajuste específico para o container de cards de resumo */
+  .financial-summary,
+  .summary-cards,
+  [class*="grid-cols"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Garantir que o gráfico de barras também tenha largura consistente */
+  .recharts-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Forçar que todos os elementos filhos mantenham a largura consistente */
+  .reports-layout > *,
+  .reports-chart-section > *,
+  .reports-tables-section > * {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }

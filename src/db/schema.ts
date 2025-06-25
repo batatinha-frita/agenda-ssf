@@ -164,7 +164,17 @@ export const patientsTable = pgTable("patients", {
   sex: patientSexEnum("sex").notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
-    .$onUpdate(() => new Date()),
+    .$onUpdate(() => new Date()), // Campos opcionais adicionais
+  cpf: text("cpf").unique(),
+  birthDate: timestamp("birth_date"),
+  // Campos de endereço
+  cep: text("cep"),
+  logradouro: text("logradouro"),
+  numero: text("numero"),
+  complemento: text("complemento"),
+  emergencyContact: text("emergency_contact"),
+  emergencyPhone: text("emergency_phone"),
+  observations: text("observations"),
 });
 
 export const patientsTableRelations = relations(

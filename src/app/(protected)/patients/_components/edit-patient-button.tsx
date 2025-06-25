@@ -22,6 +22,15 @@ interface EditPatientButtonProps {
     email: string;
     phoneNumber: string;
     sex: "male" | "female";
+    cpf?: string | null;
+    birthDate?: string | null;
+    cep?: string | null;
+    logradouro?: string | null;
+    numero?: string | null;
+    complemento?: string | null;
+    emergencyContact?: string | null;
+    emergencyPhone?: string | null;
+    observations?: string | null;
   };
   children?: React.ReactNode;
 }
@@ -45,7 +54,7 @@ const EditPatientButton = ({ patient, children }: EditPatientButtonProps) => {
           <DialogDescription>
             Atualize as informações do paciente.
           </DialogDescription>
-        </DialogHeader>
+        </DialogHeader>{" "}
         <UpsertPatientForm
           defaultValues={{
             id: patient.id,
@@ -53,6 +62,15 @@ const EditPatientButton = ({ patient, children }: EditPatientButtonProps) => {
             email: patient.email,
             phoneNumber: patient.phoneNumber,
             sex: patient.sex,
+            cpf: patient.cpf || "",
+            birthDate: patient.birthDate || "",
+            cep: patient.cep || "",
+            logradouro: patient.logradouro || "",
+            numero: patient.numero || "",
+            complemento: patient.complemento || "",
+            emergencyContact: patient.emergencyContact || "",
+            emergencyPhone: patient.emergencyPhone || "",
+            observations: patient.observations || "",
           }}
           onSuccess={() => setIsDialogOpen(false)}
         />
