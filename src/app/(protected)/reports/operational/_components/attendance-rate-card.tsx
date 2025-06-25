@@ -8,7 +8,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { UserCheck } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -23,20 +22,12 @@ interface AttendanceRateCardProps {
 }
 
 // Configuração de cores para os status
-const chartConfig = {
-  confirmed: {
-    color: "hsl(221, 83%, 53%)", // azul
-  },
-  completed: {
-    color: "hsl(142, 76%, 36%)", // verde
-  },
-  cancelled: {
-    color: "hsl(0, 84%, 60%)", // vermelho
-  },
-  pending: {
-    color: "hsl(45, 93%, 47%)", // amarelo
-  },
-} satisfies ChartConfig;
+const COLORS = {
+  confirmed: "hsl(221, 83%, 53%)", // azul
+  completed: "hsl(142, 76%, 36%)", // verde
+  cancelled: "hsl(0, 84%, 60%)", // vermelho
+  pending: "hsl(45, 93%, 47%)", // amarelo
+};
 
 // Labels para os status
 const statusLabels: Record<string, string> = {
@@ -54,8 +45,7 @@ export function AttendanceRateCard({ data }: AttendanceRateCardProps) {
     name: statusLabels[item.status] || item.status,
     value: item.count,
     percentage: item.percentage,
-    color:
-      chartConfig[item.status as keyof typeof chartConfig]?.color || "#6b7280",
+    color: COLORS[item.status as keyof typeof COLORS] || "#6b7280",
     status: item.status,
   }));
 
@@ -146,29 +136,24 @@ export function AttendanceRateCard({ data }: AttendanceRateCardProps) {
 
             {/* Gráfico de Pizza - MEIO (EXPANDINDO E CENTRALIZADO) */}
             <div className="flex flex-1 items-center justify-center">
-              <ChartContainer
-                config={chartConfig}
-                className="h-full max-h-[200px] w-full max-w-[200px]"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={2}
-                      dataKey="value"
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
 
             {/* Lista compacta - FINAL (GRUDADO EMBAIXO) */}
@@ -186,9 +171,8 @@ export function AttendanceRateCard({ data }: AttendanceRateCardProps) {
                         className="h-2 w-2 flex-shrink-0 rounded-full"
                         style={{
                           backgroundColor:
-                            chartConfig[
-                              status.status as keyof typeof chartConfig
-                            ]?.color || "#6b7280",
+                            COLORS[status.status as keyof typeof COLORS] ||
+                            "#6b7280",
                         }}
                       />
                       <span className="truncate">

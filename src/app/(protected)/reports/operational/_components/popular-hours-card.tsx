@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChartContainer, ChartConfig } from "@/components/ui/chart";
 import {
   Bar,
   BarChart,
@@ -28,16 +27,26 @@ interface PopularHour {
 
 interface PopularHoursCardProps {
   data: PopularHour[];
+  attendanceRate?: string;
+  noShowRate?: string;
 }
 
-const chartConfig = {
-  appointments: {
-    label: "Consultas",
-    color: "#10b981",
-  },
-} satisfies ChartConfig;
+const mockData = [
+  { hour: 8, hourFormatted: "08:00", appointments: 12 },
+  { hour: 9, hourFormatted: "09:00", appointments: 18 },
+  { hour: 10, hourFormatted: "10:00", appointments: 15 },
+  { hour: 11, hourFormatted: "11:00", appointments: 9 },
+  { hour: 14, hourFormatted: "14:00", appointments: 21 },
+  { hour: 15, hourFormatted: "15:00", appointments: 16 },
+  { hour: 16, hourFormatted: "16:00", appointments: 13 },
+  { hour: 17, hourFormatted: "17:00", appointments: 8 },
+];
 
-export function PopularHoursCard({ data }: PopularHoursCardProps) {
+export function PopularHoursCard({
+  data,
+  attendanceRate = "0.0",
+  noShowRate = "0.0",
+}: PopularHoursCardProps) {
   // Agrupar dados por hora (somar todos os dias da semana)
   const hourlyData = data.reduce(
     (acc, curr) => {
@@ -109,38 +118,53 @@ export function PopularHoursCard({ data }: PopularHoursCardProps) {
             </div>
 
             {/* Gráfico - MEIO (EXPANDINDO) */}
-            <div className="flex min-h-0 flex-1 items-center justify-center">
-              <ChartContainer config={chartConfig} className="h-full w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData}
-                    margin={{
-                      top: 10,
-                      right: 15,
-                      left: 15,
-                      bottom: 20,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis
-                      dataKey="hourFormatted"
-                      fontSize={11}
-                      tick={{ fontSize: 11 }}
-                    />
-                    <YAxis fontSize={11} tick={{ fontSize: 11 }} width={35} />
-                    <Bar
-                      dataKey="appointments"
-                      fill={chartConfig.appointments.color}
-                      radius={[2, 2, 0, 0]}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+            <div className="flex max-h-[280px] min-h-[200px] flex-1 items-center justify-center overflow-hidden">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{
+                    top: 10,
+                    right: 10,
+                    left: 10,
+                    bottom: 30,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis
+                    dataKey="hourFormatted"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    height={25}
+                  />
+                  <YAxis
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    width={25}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
 
-            {/* Espaço reservado para o final (mesmo que vazio) */}
-            <div className="flex-shrink-0">
-              {/* Rodapé vazio para manter estrutura */}
+            {/* Taxas de Comparecimento - FINAL (GRUDADO EMBAIXO) */}
+            <div className="grid flex-shrink-0 grid-cols-2 gap-3 border-t pt-4">
+              <div className="text-center">
+                <div className="text-lg font-bold text-green-600">
+                  {attendanceRate}%
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  Taxa de Comparecimento
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-red-600">
+                  {noShowRate}%
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  Taxa de No-show
+                </div>
+              </div>
             </div>
           </>
         )}

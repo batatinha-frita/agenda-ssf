@@ -32,6 +32,8 @@ export const getFrequentPatients = actionClient
       }
 
       // Buscar pacientes com contagem de consultas
+      console.log("Buscando pacientes para clinic ID:", actualClinicId);
+
       const patientsWithConsultations = await db
         .select({
           id: patientsTable.id,
@@ -52,11 +54,20 @@ export const getFrequentPatients = actionClient
           patientsTable.email,
           patientsTable.sex,
         )
-        .having(sql`count(${appointmentsTable.id}) >= ${minConsultations}`)
         .orderBy(desc(count(appointmentsTable.id)));
 
+      console.log("Pacientes encontrados:", patientsWithConsultations.length);
+      console.log("Dados dos pacientes:", patientsWithConsultations);
+
+      // Filtrar pacientes que atendem ao critério mínimo APÓS a busca
+      const filteredPatients = patientsWithConsultations.filter(
+        (patient) => patient.consultations >= minConsultations,
+      );
+
+      console.log("Pacientes filtrados:", filteredPatients.length);
+
       // Categorizar pacientes por frequência
-      const categorizedPatients = patientsWithConsultations.map((patient) => {
+      const categorizedPatients = filteredPatients.map((patient) => {
         let level = "Novo";
         let icon = "User";
 

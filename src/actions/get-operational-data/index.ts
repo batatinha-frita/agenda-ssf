@@ -141,6 +141,21 @@ export const getOperationalData = actionClient
             : "0",
       }));
 
+      // Calcular taxas específicas
+      const completedCount =
+        appointmentsByStatus.find((s) => s.status === "completed")?.count || 0;
+      const cancelledCount =
+        appointmentsByStatus.find((s) => s.status === "cancelled")?.count || 0;
+
+      const attendanceRate =
+        totalAppointments > 0
+          ? ((completedCount / totalAppointments) * 100).toFixed(1)
+          : "0.0";
+      const noShowRate =
+        totalAppointments > 0
+          ? ((cancelledCount / totalAppointments) * 100).toFixed(1)
+          : "0.0";
+
       // Cancelamentos por data (simplificado)
       const cancelledAppointments = appointments.filter(
         (apt) => apt.appointmentStatus === "cancelled",
@@ -195,6 +210,10 @@ export const getOperationalData = actionClient
         },
       ];
 
+      console.log("Pacientes demographics calculado:", patientsDemographics);
+      console.log("Unique patient IDs:", uniquePatientIds.length);
+      console.log("Patients data:", patients);
+
       return {
         data: {
           doctorsOccupation,
@@ -206,6 +225,9 @@ export const getOperationalData = actionClient
           period: { from, to },
           totalAppointments,
           totalPatients: uniquePatientIds.length,
+          // Adicionar taxas calculadas
+          attendanceRate,
+          noShowRate,
         },
       };
     } catch (error) {

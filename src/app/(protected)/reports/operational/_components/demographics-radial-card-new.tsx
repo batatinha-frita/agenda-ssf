@@ -55,17 +55,6 @@ export function DemographicsRadialCard({ data }: DemographicsRadialCardProps) {
     );
   }
 
-  // Preparar dados para o gráfico radial
-  const femaleData = data.find((d) => d.sex === "female");
-  const maleData = data.find((d) => d.sex === "male");
-
-  const femaleCount = femaleData?.count || 0;
-  const maleCount = maleData?.count || 0;
-
-  const femalePercent =
-    totalPatients > 0 ? (femaleCount / totalPatients) * 100 : 0;
-  const malePercent = totalPatients > 0 ? (maleCount / totalPatients) * 100 : 0;
-
   // Dados para o gráfico de pizza
   const chartData = data.map((demographic) => ({
     name: demographic.sexLabel,
@@ -73,6 +62,8 @@ export function DemographicsRadialCard({ data }: DemographicsRadialCardProps) {
     sex: demographic.sex,
     percentage: demographic.percentage,
   }));
+
+  console.log("Demographics chart data:", chartData);
 
   return (
     <Card className="flex h-full flex-col">

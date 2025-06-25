@@ -66,27 +66,35 @@ export function TopTimeSlotsCard({ data }: TopTimeSlotsCardProps) {
           <>
             {/* Insight Compacto - LOGO APÓS TÍTULO (TOPO) */}
             <div className="flex-shrink-0 text-center">
-              <div className="rounded-lg bg-blue-50 p-2">
-                <div className="flex items-center justify-center gap-2">
-                  <TrendingUp className="h-3 w-3 text-blue-600" />
-                  <p className="text-xs text-blue-700">
-                    {topSlots.length > 0 && (
-                      <>
-                        Pico: <strong>{topSlots[0].time}</strong> com{" "}
-                        <strong>{topSlots[0].count}</strong>
-                        {topSlots[0].count > totalAppointments * 0.2
-                          ? " 🔥"
-                          : " 📊"}
-                      </>
-                    )}
-                  </p>
+              <div className="rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-3">
+                <div className="mb-1 flex items-center justify-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm font-semibold text-blue-900">
+                    Horário de Pico
+                  </span>
                 </div>
+                {topSlots.length > 0 && (
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-lg font-bold text-blue-700">
+                      {topSlots[0].time}
+                    </span>
+                    <span className="text-sm text-blue-600">com</span>
+                    <span className="text-lg font-bold text-blue-700">
+                      {topSlots[0].count}
+                    </span>
+                    <span className="text-lg">
+                      {topSlots[0].count > totalAppointments * 0.2
+                        ? "🔥"
+                        : "📊"}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Lista de horários - MEIO (EXPANDINDO) */}
-            <div className="flex flex-1 items-center justify-center">
-              <div className="w-full space-y-2">
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full space-y-2 overflow-y-auto pr-2">
                 {topSlots.map((slot, index) => {
                   const percentage =
                     totalAppointments > 0
