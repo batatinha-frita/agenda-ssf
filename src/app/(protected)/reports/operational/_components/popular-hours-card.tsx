@@ -143,28 +143,13 @@ export function PopularHoursCard({
                     axisLine={false}
                     width={25}
                   />
+                  <Bar
+                    dataKey="appointments"
+                    fill="#22c55e"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
-
-            {/* Taxas de Comparecimento - FINAL (GRUDADO EMBAIXO) */}
-            <div className="grid flex-shrink-0 grid-cols-2 gap-3 border-t pt-4">
-              <div className="text-center">
-                <div className="text-lg font-bold text-green-600">
-                  {attendanceRate}%
-                </div>
-                <div className="text-muted-foreground text-xs">
-                  Taxa de Comparecimento
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-lg font-bold text-red-600">
-                  {noShowRate}%
-                </div>
-                <div className="text-muted-foreground text-xs">
-                  Taxa de No-show
-                </div>
-              </div>
             </div>
           </>
         )}

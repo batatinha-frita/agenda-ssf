@@ -118,40 +118,34 @@ export function DemographicsRadialCard({ data }: DemographicsRadialCardProps) {
           </div>
         </div>
 
-        {/* Total de Pacientes - CENTRO */}
-        <div className="flex-shrink-0 text-center">
-          <div className="text-2xl font-bold text-gray-900">
-            {totalPatients}
-          </div>
-          <div className="text-muted-foreground text-xs">
-            Total de Pacientes
-          </div>
-        </div>
-
-        {/* Legenda - FINAL (GRUDADO EMBAIXO) */}
-        <div className="grid w-full flex-shrink-0 grid-cols-2 gap-2 text-sm">
-          {data.map((demographic) => (
-            <div
-              key={demographic.sex}
-              className="flex items-center gap-2 rounded p-2"
-            >
-              <div
-                className="h-3 w-3 flex-shrink-0 rounded-full"
-                style={{
-                  backgroundColor:
-                    COLORS[demographic.sex as keyof typeof COLORS],
-                }}
-              />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-medium">
-                  {demographic.sexLabel}
-                </div>
-                <div className="text-muted-foreground text-xs">
-                  {demographic.count} ({demographic.percentage}%)
-                </div>
-              </div>
+        {/* Estatísticas em uma linha - FINAL (GRUDADO EMBAIXO) */}
+        <div className="grid w-full flex-shrink-0 grid-cols-3 gap-2 text-center">
+          {/* Masculino */}
+          <div className="rounded-lg bg-blue-50 p-2">
+            <div className="text-sm font-bold text-blue-600">{maleCount}</div>
+            <div className="text-muted-foreground text-xs">Masculino</div>
+            <div className="text-xs font-medium text-blue-600">
+              {malePercent.toFixed(1)}%
             </div>
-          ))}
+          </div>
+
+          {/* Feminino */}
+          <div className="rounded-lg bg-pink-50 p-2">
+            <div className="text-sm font-bold text-pink-600">{femaleCount}</div>
+            <div className="text-muted-foreground text-xs">Feminino</div>
+            <div className="text-xs font-medium text-pink-600">
+              {femalePercent.toFixed(1)}%
+            </div>
+          </div>
+
+          {/* Total */}
+          <div className="rounded-lg bg-gray-50 p-2">
+            <div className="text-sm font-bold text-gray-900">
+              {totalPatients}
+            </div>
+            <div className="text-muted-foreground text-xs">Total</div>
+            <div className="text-xs font-medium text-gray-600">100%</div>
+          </div>
         </div>
       </CardContent>
     </Card>
