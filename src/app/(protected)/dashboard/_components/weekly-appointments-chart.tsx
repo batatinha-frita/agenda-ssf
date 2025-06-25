@@ -144,8 +144,8 @@ const WeeklyAppointmentsChart = ({
   } satisfies ChartConfig;
   return (
     <Card className="h-fit">
+      {" "}
       <CardHeader className="pb-2">
-        {" "}
         <div className="flex items-center gap-2">
           <Users className="text-muted-foreground h-4 w-4" />
           <CardTitle className="text-sm">{title}</CardTitle>
@@ -167,13 +167,13 @@ const WeeklyAppointmentsChart = ({
               tickMargin={6}
               axisLine={false}
               fontSize={10}
-            />{" "}
+            />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={6}
               fontSize={10}
-            />{" "}
+            />
             <Tooltip
               formatter={(value: any, name: any) => {
                 const label =

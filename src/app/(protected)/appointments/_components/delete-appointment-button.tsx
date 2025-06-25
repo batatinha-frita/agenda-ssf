@@ -55,19 +55,16 @@ export function DeleteAppointmentButton({
   const handleDelete = () => {
     deleteAppointmentAction.execute({ appointmentId });
   };
-
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      {children ? (
-        <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      ) : (
-        <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
+        {children || (
           <Button variant="destructive" size="sm">
             <Trash2 className="mr-2 h-4 w-4" />
             Deletar consulta
           </Button>
-        </AlertDialogTrigger>
-      )}
+        )}
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Deletar consulta</AlertDialogTitle>

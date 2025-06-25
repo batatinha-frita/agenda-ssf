@@ -36,7 +36,10 @@ import { db } from "@/db";
 import { appointmentsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { UpsertAppointmentButton } from "../_components/upsert-appointment-button";
+import { CancelAppointmentButton } from "../_components/cancel-appointment-button";
+import { ReactivateAppointmentButton } from "../_components/reactivate-appointment-button";
 import { DeleteAppointmentButton } from "../_components/delete-appointment-button";
+import { AppointmentNotes } from "../_components/appointment-notes";
 
 interface AppointmentDetailsPageProps {
   params: Promise<{
@@ -58,13 +61,15 @@ const AppointmentDetailsPage = async ({
 
   if (!session.user.clinic) {
     redirect("/clinic-form");
-  }
-  // Buscar o agendamento
+  } // Buscar o agendamento
   const appointment = await db.query.appointmentsTable.findFirst({
     where: eq(appointmentsTable.id, appointmentId),
     with: {
       patient: true,
       doctor: true,
+      noteHistory: {
+        orderBy: (notes, { desc }) => [desc(notes.createdAt)],
+      },
     },
   });
 
@@ -104,6 +109,57 @@ const AppointmentDetailsPage = async ({
             patients={patients}
             doctors={doctors}
           />
+
+          {/* Botão Cancelar - apenas para consultas futuras, não pagas e não canceladas */}
+          {(() => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const appointmentDate = new Date(appointment.date);
+            appointmentDate.setHours(0, 0, 0, 0);
+
+            const isFuture = appointmentDate >= today;
+            const isNotPaid = appointment.paymentStatus !== "paid";
+            const isNotCancelled =
+              appointment.appointmentStatus !== "cancelled";
+
+            return isFuture && isNotPaid && isNotCancelled ? (
+              <CancelAppointmentButton
+                appointmentId={appointment.id}
+                patientName={appointment.patient.name}
+                appointmentDate={format(
+                  new Date(appointment.date),
+                  "dd/MM/yyyy 'às' HH:mm",
+                  { locale: ptBR },
+                )}
+                redirectAfterCancel={true}
+              />
+            ) : null;
+          })()}
+
+          {/* Botão Reativar - apenas para consultas canceladas e futuras */}
+          {(() => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const appointmentDate = new Date(appointment.date);
+            appointmentDate.setHours(0, 0, 0, 0);
+
+            const isFuture = appointmentDate >= today;
+            const isCancelled = appointment.appointmentStatus === "cancelled";
+
+            return isFuture && isCancelled ? (
+              <ReactivateAppointmentButton
+                appointmentId={appointment.id}
+                patientName={appointment.patient.name}
+                appointmentDate={format(
+                  new Date(appointment.date),
+                  "dd/MM/yyyy 'às' HH:mm",
+                  { locale: ptBR },
+                )}
+                redirectAfterReactivate={true}
+              />
+            ) : null;
+          })()}
+
           <DeleteAppointmentButton
             appointmentId={appointment.id}
             redirectAfterDelete={true}
@@ -154,7 +210,6 @@ const AppointmentDetailsPage = async ({
               </div>
             </CardContent>
           </Card>
-
           {/* Informações do Médico */}
           <Card>
             <CardHeader>
@@ -180,7 +235,6 @@ const AppointmentDetailsPage = async ({
               </div>
             </CardContent>
           </Card>
-
           {/* Detalhes do Agendamento */}
           <Card>
             <CardHeader>
@@ -240,7 +294,6 @@ const AppointmentDetailsPage = async ({
                 )}
             </CardContent>
           </Card>
-
           {/* Informações Financeiras */}
           <Card>
             <CardHeader>
@@ -291,24 +344,13 @@ const AppointmentDetailsPage = async ({
                 </div>
               </div>
             </CardContent>
-          </Card>
-
+          </Card>{" "}
           {/* Observações */}
-          {appointment.notes && (
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5" />
-                  <span>Observações</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm whitespace-pre-wrap">
-                  {appointment.notes}
-                </p>
-              </CardContent>
-            </Card>
-          )}
+          <AppointmentNotes
+            appointmentId={appointment.id}
+            notes={appointment.noteHistory || []}
+            legacyNotes={appointment.notes || undefined}
+          />
         </div>
       </PageContent>
     </PageContainer>

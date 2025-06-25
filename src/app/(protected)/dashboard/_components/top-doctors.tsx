@@ -18,8 +18,8 @@ interface TopDoctorsProps {
 export default function TopDoctors({ doctors }: TopDoctorsProps) {
   return (
     <Card className="mx-auto w-full">
+      {" "}
       <CardContent className="p-4">
-        {" "}
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Stethoscope className="text-muted-foreground h-4 w-4" />
@@ -33,8 +33,8 @@ export default function TopDoctors({ doctors }: TopDoctorsProps) {
             >
               Ver todos
             </Button>
-          </Link>
-        </div>{" "}
+          </Link>{" "}
+        </div>
         {/* Lista vertical de médicos */}
         <div className="space-y-2">
           {doctors.slice(0, 5).map((doctor) => (

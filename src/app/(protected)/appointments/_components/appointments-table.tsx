@@ -14,10 +14,11 @@ import {
 import { appointmentsTable, patientsTable, doctorsTable } from "@/db/schema";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ExternalLink, Calendar, Edit, Trash2 } from "lucide-react";
+import { ExternalLink, Calendar, Edit, Ban, RotateCcw } from "lucide-react";
 import Link from "next/link";
-import { DeleteAppointmentButton } from "./delete-appointment-button";
 import { UpsertAppointmentAction } from "./upsert-appointment-action";
+import { CancelAppointmentButton } from "./cancel-appointment-button";
+import { ReactivateAppointmentButton } from "./reactivate-appointment-button";
 
 interface AppointmentsTableProps {
   appointments: (typeof appointmentsTable.$inferSelect & {
@@ -52,9 +53,9 @@ export function AppointmentsTable({
 
   return (
     <div className="rounded-md border">
+      {" "}
       <Table>
         <TableHeader>
-          {" "}
           <TableRow>
             <TableHead>Paciente</TableHead>
             <TableHead>Data</TableHead>
@@ -106,9 +107,9 @@ export function AppointmentsTable({
                     ? "Pago"
                     : appointment.paymentStatus === "overdue"
                       ? "Atrasado"
-                      : "Em Aberto"}
-                </Badge>{" "}
-              </TableCell>{" "}
+                      : "Em Aberto"}{" "}
+                </Badge>
+              </TableCell>
               <TableCell>
                 <Badge
                   variant={
@@ -136,7 +137,7 @@ export function AppointmentsTable({
                       ? "Cancelado"
                       : appointment.appointmentStatus === "completed"
                         ? "Realizado"
-                        : "Pendente"}
+                        : "Pendente"}{" "}
                 </Badge>
               </TableCell>
               <TableCell>
@@ -144,8 +145,8 @@ export function AppointmentsTable({
                   <Link href={`/appointments/${appointment.id}`}>
                     <Button variant="ghost" size="sm">
                       <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </Link>{" "}
+                    </Button>{" "}
+                  </Link>
                   <UpsertAppointmentAction
                     appointment={{
                       ...appointment,
@@ -163,14 +164,65 @@ export function AppointmentsTable({
                       <Edit className="h-4 w-4" />
                     </Button>
                   </UpsertAppointmentAction>
-                  <DeleteAppointmentButton
-                    appointmentId={appointment.id}
-                    patientName={appointment.patient.name}
-                  >
-                    <Button variant="ghost" size="sm">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </DeleteAppointmentButton>
+                  {/* Botão Cancelar - apenas para consultas futuras, não pagas e não canceladas */}
+                  {(() => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const appointmentDate = new Date(appointment.date);
+                    appointmentDate.setHours(0, 0, 0, 0);
+
+                    const isFuture = appointmentDate >= today;
+                    const isNotPaid = appointment.paymentStatus !== "paid";
+                    const isNotCancelled =
+                      appointment.appointmentStatus !== "cancelled";
+
+                    return isFuture && isNotPaid && isNotCancelled ? (
+                      <CancelAppointmentButton
+                        appointmentId={appointment.id}
+                        patientName={appointment.patient.name}
+                        appointmentDate={new Intl.DateTimeFormat("pt-BR", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }).format(new Date(appointment.date))}
+                      >
+                        <Button variant="ghost" size="sm">
+                          <Ban className="h-4 w-4" />
+                        </Button>
+                      </CancelAppointmentButton>
+                    ) : null;
+                  })()}
+                  {/* Botão Reativar - apenas para consultas canceladas e futuras */}
+                  {(() => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const appointmentDate = new Date(appointment.date);
+                    appointmentDate.setHours(0, 0, 0, 0);
+
+                    const isFuture = appointmentDate >= today;
+                    const isCancelled =
+                      appointment.appointmentStatus === "cancelled";
+
+                    return isFuture && isCancelled ? (
+                      <ReactivateAppointmentButton
+                        appointmentId={appointment.id}
+                        patientName={appointment.patient.name}
+                        appointmentDate={new Intl.DateTimeFormat("pt-BR", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }).format(new Date(appointment.date))}
+                      >
+                        <Button variant="ghost" size="sm">
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </ReactivateAppointmentButton>
+                    ) : null;
+                  })()}
                 </div>
               </TableCell>
             </TableRow>

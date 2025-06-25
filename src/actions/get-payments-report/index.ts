@@ -55,8 +55,37 @@ const handler = async ({ parsedInput }: { parsedInput: any }) => {
     headers: await headers(),
   });
 
+  // Para desenvolvimento, se não há sessão, usar valores padrão
   if (!session?.user?.clinic?.id) {
-    redirect("/authentication");
+    // Em produção, fazer redirect
+    if (process.env.NODE_ENV === "production") {
+      redirect("/authentication");
+    }
+
+    // Em desenvolvimento, retornar dados vazios
+    const emptyResult: PaymentsReportData = {
+      summary: {
+        totalPaid: 0,
+        totalPending: 0,
+        totalOverdue: 0,
+        totalAppointments: 0,
+        countPaid: 0,
+        countPending: 0,
+        countOverdue: 0,
+      },
+      details: {
+        paid: [],
+        pending: [],
+        overdue: [],
+      },
+      allDetails: {
+        paid: [],
+        pending: [],
+        overdue: [],
+      },
+      clinicName: "Clínica Demo (Desenvolvimento)",
+    };
+    return emptyResult;
   }
 
   const { from, to, doctorId, paymentStatus } = parsedInput;

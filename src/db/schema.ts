@@ -204,9 +204,29 @@ export const appointmentsTable = pgTable("appointments", {
     .$onUpdate(() => new Date()),
 });
 
+export const appointmentNotesTable = pgTable("appointment_notes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  appointmentId: uuid("appointment_id")
+    .notNull()
+    .references(() => appointmentsTable.id, { onDelete: "cascade" }),
+  note: text("note").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdBy: text("created_by").notNull(), // Para futuro: rastrear quem criou
+});
+
+export const appointmentNotesTableRelations = relations(
+  appointmentNotesTable,
+  ({ one }) => ({
+    appointment: one(appointmentsTable, {
+      fields: [appointmentNotesTable.appointmentId],
+      references: [appointmentsTable.id],
+    }),
+  }),
+);
+
 export const appointmentsTableRelations = relations(
   appointmentsTable,
-  ({ one }) => ({
+  ({ one, many }) => ({
     clinic: one(clinicsTable, {
       fields: [appointmentsTable.clinicId],
       references: [clinicsTable.id],
@@ -219,5 +239,6 @@ export const appointmentsTableRelations = relations(
       fields: [appointmentsTable.doctorId],
       references: [doctorsTable.id],
     }),
+    noteHistory: many(appointmentNotesTable),
   }),
 );

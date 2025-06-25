@@ -97,8 +97,8 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         </PageHeaderContent>
         <PageActions>
           <DatePicker />
-        </PageActions>
-      </PageHeader>{" "}
+        </PageActions>{" "}
+      </PageHeader>
       <PageContent>
         <div className="space-y-3">
           {/* Cards de Estatísticas */}
@@ -110,10 +110,8 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalPatients={totalPatients.total}
             totalDoctors={totalDoctors.total}
           />
-
-          {/* Gráfico de Pacientes + Top Médicos */}
+          {/* Gráfico de Pacientes + Top Médicos */}{" "}
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-            {" "}
             <div className="lg:col-span-2">
               <WeeklyAppointmentsChart
                 weeklyAppointmentsData={weeklyAppointmentsData}
@@ -125,7 +123,6 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
               <TopDoctors doctors={topDoctors} />
             </div>
           </div>
-
           {/* Agendamentos Recentes + Top Especialidades */}
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
             <div className="lg:col-span-2">

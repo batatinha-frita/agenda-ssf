@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ExternalLink, Edit, Trash2 } from "lucide-react";
+import { ArrowUpDown, ExternalLink, Edit, Ban, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { appointmentsTable, patientsTable, doctorsTable } from "@/db/schema";
 import { UpsertAppointmentAction } from "../../appointments/_components/upsert-appointment-action";
-import { DeleteAppointmentButton } from "../../appointments/_components/delete-appointment-button";
+import { CancelAppointmentButton } from "../../appointments/_components/cancel-appointment-button";
+import { ReactivateAppointmentButton } from "../../appointments/_components/reactivate-appointment-button";
 
 export type TodayAppointment = typeof appointmentsTable.$inferSelect & {
   patient: {
@@ -101,7 +102,6 @@ export const createAppointmentsColumns = ({
     header: "Ações",
     cell: ({ row }) => {
       const appointment = row.original;
-
       return (
         <div className="flex items-center gap-1">
           <Link href={`/appointments/${appointment.id}`}>
@@ -122,14 +122,66 @@ export const createAppointmentsColumns = ({
               <Edit className="h-4 w-4" />
             </Button>
           </UpsertAppointmentAction>
-          <DeleteAppointmentButton
-            appointmentId={appointment.id}
-            patientName={appointment.patient.name}
-          >
-            <Button variant="ghost" size="sm">
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </DeleteAppointmentButton>
+
+          {/* Botão Cancelar - apenas para consultas futuras, não pagas e não canceladas */}
+          {(() => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const appointmentDate = new Date(appointment.date);
+            appointmentDate.setHours(0, 0, 0, 0);
+
+            const isFuture = appointmentDate >= today;
+            const isNotPaid = appointment.paymentStatus !== "paid";
+            const isNotCancelled =
+              appointment.appointmentStatus !== "cancelled";
+
+            return isFuture && isNotPaid && isNotCancelled ? (
+              <CancelAppointmentButton
+                appointmentId={appointment.id}
+                patientName={appointment.patient.name}
+                appointmentDate={new Intl.DateTimeFormat("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }).format(new Date(appointment.date))}
+              >
+                <Button variant="ghost" size="sm">
+                  <Ban className="h-4 w-4" />
+                </Button>
+              </CancelAppointmentButton>
+            ) : null;
+          })()}
+
+          {/* Botão Reativar - apenas para consultas canceladas e futuras */}
+          {(() => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const appointmentDate = new Date(appointment.date);
+            appointmentDate.setHours(0, 0, 0, 0);
+
+            const isFuture = appointmentDate >= today;
+            const isCancelled = appointment.appointmentStatus === "cancelled";
+
+            return isFuture && isCancelled ? (
+              <ReactivateAppointmentButton
+                appointmentId={appointment.id}
+                patientName={appointment.patient.name}
+                appointmentDate={new Intl.DateTimeFormat("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }).format(new Date(appointment.date))}
+              >
+                <Button variant="ghost" size="sm">
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              </ReactivateAppointmentButton>
+            ) : null;
+          })()}
         </div>
       );
     },

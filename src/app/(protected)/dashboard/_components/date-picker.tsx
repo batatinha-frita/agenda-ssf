@@ -93,6 +93,7 @@ export function DatePicker({
             {date?.from ? (
               date.to ? (
                 <>
+                  {" "}
                   {dayjs(date.from).format("MMM DD, YYYY")} -{" "}
                   {dayjs(date.to).format("MMM DD, YYYY")}
                 </>
@@ -122,8 +123,8 @@ export function DatePicker({
                   {preset.label}
                 </Button>
               ))}
-            </div>
-          </div>{" "}
+            </div>{" "}
+          </div>
           <Calendar
             initialFocus
             mode="range"

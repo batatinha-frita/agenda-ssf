@@ -63,15 +63,15 @@ const AppointmentsPage = async () => {
             Acesse uma visão detalhada de métricas principais e resultados dos
             pacientes
           </p>
-        </div>
+        </div>{" "}
         <UpsertAppointmentButton patients={patients} doctors={doctors} />
-      </div>{" "}
+      </div>
       <div className="mt-8">
         <AppointmentsClientPage
           appointments={appointments}
           patients={patients}
           doctors={doctors}
-        />{" "}
+        />
       </div>
     </PageContainer>
   );

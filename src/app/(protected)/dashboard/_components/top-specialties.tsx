@@ -66,9 +66,9 @@ export default function TopSpecialties({
             >
               Ver todos
             </Button>
-          </Link>
+          </Link>{" "}
         </div>
-        {/* specialtys List */}{" "}
+        {/* specialtys List */}
         <div className="space-y-3">
           {topSpecialties.map((specialty) => {
             const Icon = getSpecialtyIcon(specialty.specialty);

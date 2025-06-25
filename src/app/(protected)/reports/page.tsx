@@ -54,7 +54,7 @@ const allReports = [
     description: "Análise temporal de receitas",
     href: "/reports/financial/revenue",
     icon: TrendingUp,
-    status: "Em breve",
+    status: "Ativo",
     type: "Financeiro",
   },
   // Relatórios Operacionais
