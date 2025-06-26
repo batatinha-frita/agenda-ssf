@@ -572,11 +572,11 @@ export default function ReportsPage() {
           </Button>
 
           <Button asChild variant="outline" className="h-auto p-4">
-            <Link href="/reports/detailed">
+            <Link href="/reports/financial/revenue">
               <div className="flex items-center gap-3">
-                <Users className="h-6 w-6 text-blue-600" />
+                <TrendingUp className="h-6 w-6 text-green-600" />
                 <div className="text-left">
-                  <p className="font-medium">Relatório Detalhado</p>
+                  <p className="font-medium">Relatório de Receitas</p>
                   <p className="text-muted-foreground text-sm">
                     Análise completa de pacientes
                   </p>

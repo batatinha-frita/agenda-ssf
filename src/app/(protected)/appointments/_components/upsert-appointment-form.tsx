@@ -9,7 +9,7 @@ import { z } from "zod";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 
 import { upsertAppointment } from "@/actions/upsert-appointment";
@@ -88,6 +88,7 @@ export function UpsertAppointmentForm({
   >(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [existingAppointments, setExistingAppointments] = useState<Date[]>([]);
+  const [selectKey, setSelectKey] = useState(0); // Força re-render do Select
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -142,12 +143,7 @@ export function UpsertAppointmentForm({
     }
   }, [doctorId, doctors, form, appointment]);
   // Buscar agendamentos existentes quando médico e data mudarem
-  useEffect(() => {
-    if (selectedDoctor && selectedDate) {
-      fetchExistingAppointments();
-    }
-  }, [selectedDoctor, selectedDate]);
-  const fetchExistingAppointments = async () => {
+  const fetchExistingAppointments = useCallback(async () => {
     if (!selectedDoctor || !selectedDate) return;
 
     try {
@@ -161,15 +157,14 @@ export function UpsertAppointmentForm({
           result.data.map((dateStr) => new Date(dateStr)),
         );
       }
-
-      generateAvailableTimes();
     } catch (error) {
       console.error("Erro ao buscar agendamentos:", error);
       setAvailableTimes([]);
     }
-  };
+  }, [selectedDoctor, selectedDate, getAppointmentsAction]);
 
-  const generateAvailableTimes = () => {
+  // Gerar horários disponíveis
+  const generateAvailableTimes = useCallback(() => {
     if (!selectedDoctor || !selectedDate) return;
 
     const dayOfWeek = selectedDate.getDay();
@@ -191,8 +186,9 @@ export function UpsertAppointmentForm({
     }
 
     const times: string[] = [];
-    const startTime = selectedDoctor.availableFromTime;
-    const endTime = selectedDoctor.availableToTime;
+    // Garantir formato HH:mm (cortar segundos se vier HH:mm:ss)
+    const startTime = (selectedDoctor.availableFromTime || "08:00").slice(0, 5);
+    const endTime = (selectedDoctor.availableToTime || "18:00").slice(0, 5);
 
     const [startHour, startMinute] = startTime.split(":").map(Number);
     const [endHour, endMinute] = endTime.split(":").map(Number);
@@ -231,9 +227,35 @@ export function UpsertAppointmentForm({
     }
 
     setAvailableTimes(times);
-  };
+  }, [selectedDoctor, selectedDate, existingAppointments, appointment]);
+
+  useEffect(() => {
+    if (selectedDoctor && selectedDate) {
+      fetchExistingAppointments();
+    }
+  }, [fetchExistingAppointments]);
+
+  // Gerar horários disponíveis quando os agendamentos existentes mudarem
+  useEffect(() => {
+    if (selectedDoctor && selectedDate) {
+      generateAvailableTimes();
+    } else {
+      setAvailableTimes([]);
+    }
+  }, [generateAvailableTimes, selectedDoctor, selectedDate]);
+
+  // Limpar horário selecionado quando os horários disponíveis mudarem
+  useEffect(() => {
+    if (availableTimes.length > 0) {
+      // Se não está editando um agendamento existente, limpar o horário
+      if (!appointment) {
+        form.setValue("time", "");
+      }
+      // Força re-render do Select
+      setSelectKey((prev) => prev + 1);
+    }
+  }, [availableTimes, appointment, form]);
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Dados do formulário:", values);
     upsertAppointmentAction.execute({
       ...values,
       id: appointment?.id,
@@ -443,10 +465,13 @@ export function UpsertAppointmentForm({
               name="time"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Horário</FormLabel>
+                  <FormLabel>
+                    Horário ({availableTimes.length} disponíveis)
+                  </FormLabel>
                   <Select
+                    key={selectKey}
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                     disabled={isTimeFieldDisabled}
                   >
                     <FormControl>
