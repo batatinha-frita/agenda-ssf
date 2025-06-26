@@ -56,23 +56,14 @@ const AppointmentsPage = async () => {
 
   return (
     <PageContainer>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Agendamentos</h1>
-          <p className="text-muted-foreground text-sm">
-            Acesse uma visão detalhada de métricas principais e resultados dos
-            pacientes
-          </p>
-        </div>{" "}
-        <UpsertAppointmentButton patients={patients} doctors={doctors} />
-      </div>
-      <div className="mt-8">
-        <AppointmentsClientPage
-          appointments={appointments}
-          patients={patients}
-          doctors={doctors}
-        />
-      </div>
+      <AppointmentsClientPage
+        appointments={appointments}
+        patients={patients}
+        doctors={doctors}
+        addButton={
+          <UpsertAppointmentButton patients={patients} doctors={doctors} />
+        }
+      />
     </PageContainer>
   );
 };

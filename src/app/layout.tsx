@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@/lib/console"; // Configuração de logs
 
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";

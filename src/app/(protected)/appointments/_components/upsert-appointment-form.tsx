@@ -67,6 +67,9 @@ const formSchema = z.object({
   paymentStatus: z.enum(["paid", "pending", "overdue"], {
     required_error: "Status de pagamento é obrigatório.",
   }),
+  appointmentStatus: z.enum(["confirmed", "cancelled"], {
+    required_error: "Status da consulta é obrigatório.",
+  }),
   notes: z.string().optional(),
 });
 
@@ -102,6 +105,11 @@ export function UpsertAppointmentForm({
         ? appointment.appointmentPriceInCents / 100
         : 0,
       paymentStatus: appointment?.paymentStatus ?? "pending",
+      appointmentStatus:
+        appointment?.appointmentStatus === "confirmed" ||
+        appointment?.appointmentStatus === "cancelled"
+          ? appointment.appointmentStatus
+          : ("confirmed" as const),
       notes: appointment?.notes ?? "",
     },
   });
@@ -390,6 +398,35 @@ export function UpsertAppointmentForm({
             />{" "}
             <FormField
               control={form.control}
+              name="appointmentStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status da consulta</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="confirmed">Confirmada</SelectItem>
+                      <SelectItem value="cancelled">Cancelada</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>Status atual da consulta.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Linha 3: Status do pagamento */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+            <FormField
+              control={form.control}
               name="paymentStatus"
               render={({ field }) => (
                 <FormItem>
@@ -418,7 +455,7 @@ export function UpsertAppointmentForm({
             />
           </div>
 
-          {/* Linha 3: Data e Horário */}
+          {/* Linha 4: Data e Horário */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {" "}
             <FormField
@@ -493,7 +530,7 @@ export function UpsertAppointmentForm({
             />{" "}
           </div>
 
-          {/* Linha 4: Observações (largura completa) */}
+          {/* Linha 5: Observações (largura completa) */}
           <FormField
             control={form.control}
             name="notes"

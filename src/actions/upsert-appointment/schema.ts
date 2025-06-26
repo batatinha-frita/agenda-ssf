@@ -20,5 +20,10 @@ export const upsertAppointmentSchema = z.object({
   paymentStatus: z.enum(["paid", "pending", "overdue"], {
     required_error: "Status de pagamento é obrigatório.",
   }),
+  appointmentStatus: z
+    .enum(["confirmed", "cancelled"], {
+      required_error: "Status da consulta é obrigatório.",
+    })
+    .optional(),
   notes: z.string().optional(),
 });

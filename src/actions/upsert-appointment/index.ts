@@ -22,6 +22,7 @@ export const upsertAppointment = actionClient
         time,
         appointmentPriceInCents,
         paymentStatus,
+        appointmentStatus = "confirmed",
         notes,
       },
     }) => {
@@ -84,6 +85,7 @@ export const upsertAppointment = actionClient
             date: appointmentDateTime,
             appointmentPriceInCents,
             paymentStatus,
+            appointmentStatus,
             notes,
             updatedAt: new Date(),
           })
@@ -97,6 +99,7 @@ export const upsertAppointment = actionClient
           date: appointmentDateTime,
           appointmentPriceInCents,
           paymentStatus,
+          appointmentStatus,
           notes,
         });
       }

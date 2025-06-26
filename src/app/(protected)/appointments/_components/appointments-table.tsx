@@ -14,7 +14,15 @@ import {
 import { appointmentsTable, patientsTable, doctorsTable } from "@/db/schema";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ExternalLink, Calendar, Edit, Ban, RotateCcw } from "lucide-react";
+import {
+  ExternalLink,
+  Calendar,
+  Edit,
+  Ban,
+  RotateCcw,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import Link from "next/link";
 import { UpsertAppointmentAction } from "./upsert-appointment-action";
 import { CancelAppointmentButton } from "./cancel-appointment-button";
@@ -115,29 +123,24 @@ export function AppointmentsTable({
                   variant={
                     appointment.appointmentStatus === "confirmed"
                       ? "default"
-                      : appointment.appointmentStatus === "cancelled"
-                        ? "destructive"
-                        : appointment.appointmentStatus === "completed"
-                          ? "default"
-                          : "secondary"
+                      : "destructive"
                   }
                   className={
                     appointment.appointmentStatus === "confirmed"
                       ? "bg-green-100 text-green-700 hover:bg-green-200"
-                      : appointment.appointmentStatus === "cancelled"
-                        ? ""
-                        : appointment.appointmentStatus === "completed"
-                          ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-red-100 text-red-700 hover:bg-red-200"
                   }
                 >
-                  {appointment.appointmentStatus === "confirmed"
-                    ? "Confirmado"
-                    : appointment.appointmentStatus === "cancelled"
-                      ? "Cancelado"
-                      : appointment.appointmentStatus === "completed"
-                        ? "Realizado"
-                        : "Pendente"}{" "}
+                  <div className="flex items-center gap-1">
+                    {appointment.appointmentStatus === "confirmed" ? (
+                      <CheckCircle className="h-3 w-3" />
+                    ) : (
+                      <XCircle className="h-3 w-3" />
+                    )}
+                    {appointment.appointmentStatus === "confirmed"
+                      ? "Confirmado"
+                      : "Cancelado"}
+                  </div>
                 </Badge>
               </TableCell>
               <TableCell>
