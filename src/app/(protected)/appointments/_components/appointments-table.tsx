@@ -152,13 +152,18 @@ export function AppointmentsTable({
                   </Link>
                   <UpsertAppointmentAction
                     appointment={{
-                      ...appointment,
-                      patient: patients.find(
-                        (p) => p.id === appointment.patient.id,
-                      )!,
-                      doctor: doctors.find(
-                        (d) => d.id === appointment.doctorId,
-                      )!,
+                      id: appointment.id,
+                      date: appointment.date,
+                      appointmentPriceInCents:
+                        appointment.appointmentPriceInCents,
+                      paymentStatus: appointment.paymentStatus,
+                      appointmentStatus: appointment.appointmentStatus,
+                      notes: appointment.notes,
+                      clinicId: appointment.clinicId,
+                      patientId: appointment.patient.id,
+                      doctorId: appointment.doctorId,
+                      createdAt: appointment.createdAt,
+                      updatedAt: appointment.updatedAt,
                     }}
                     patients={patients}
                     doctors={doctors}

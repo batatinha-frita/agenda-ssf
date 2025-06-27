@@ -7,7 +7,7 @@ import { db } from "@/db";
 import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
-import { UpsertAppointmentButton } from "./_components/upsert-appointment-button";
+import { AppointmentDialog } from "./_components/appointment-dialog";
 import { AppointmentsClientPage } from "./_components/appointments-client-page";
 
 const AppointmentsPage = async () => {
@@ -61,7 +61,11 @@ const AppointmentsPage = async () => {
         patients={patients}
         doctors={doctors}
         addButton={
-          <UpsertAppointmentButton patients={patients} doctors={doctors} />
+          <AppointmentDialog
+            key="appointment-dialog"
+            patients={patients}
+            doctors={doctors}
+          />
         }
       />
     </PageContainer>

@@ -35,7 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { db } from "@/db";
 import { appointmentsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { UpsertAppointmentButton } from "../_components/upsert-appointment-button";
+import { AppointmentDialog } from "../_components/appointment-dialog";
 import { CancelAppointmentButton } from "../_components/cancel-appointment-button";
 import { ReactivateAppointmentButton } from "../_components/reactivate-appointment-button";
 import { DeleteAppointmentButton } from "../_components/delete-appointment-button";
@@ -104,7 +104,7 @@ const AppointmentDetailsPage = async ({
           </PageDescription>
         </PageHeaderContent>{" "}
         <PageActions>
-          <UpsertAppointmentButton
+          <AppointmentDialog
             appointment={appointment}
             patients={patients}
             doctors={doctors}

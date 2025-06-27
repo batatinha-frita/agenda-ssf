@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { appointmentsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { actionClient } from "@/lib/next-safe-action";
-import { eq, and, ne } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { upsertAppointmentSchema } from "./schema";
@@ -40,11 +40,12 @@ export const upsertAppointment = actionClient
 
     // Verificar se já existe um agendamento no mesmo horário para o mesmo médico
     const existingAppointment = await db.query.appointmentsTable.findFirst({
-      where: and(
-        eq(appointmentsTable.doctorId, parsedInput.doctorId),
-        eq(appointmentsTable.date, appointmentDateTime),
-        parsedInput.id ? ne(appointmentsTable.id, parsedInput.id) : undefined,
-      ),
+      where: (appointments, { eq, and, ne }) =>
+        and(
+          eq(appointments.doctorId, parsedInput.doctorId),
+          eq(appointments.date, appointmentDateTime),
+          parsedInput.id ? ne(appointments.id, parsedInput.id) : undefined,
+        ),
     });
 
     if (existingAppointment) {

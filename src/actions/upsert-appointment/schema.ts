@@ -2,28 +2,16 @@ import { z } from "zod";
 
 export const upsertAppointmentSchema = z.object({
   id: z.string().optional(),
-  patientId: z.string().min(1, {
-    message: "Paciente é obrigatório.",
-  }),
-  doctorId: z.string().min(1, {
-    message: "Médico é obrigatório.",
-  }),
+  patientId: z.string().min(1, "Paciente é obrigatório"),
+  doctorId: z.string().min(1, "Médico é obrigatório"),
   date: z.date({
-    required_error: "Data é obrigatória.",
+    required_error: "Data é obrigatória",
   }),
-  time: z.string().min(1, {
-    message: "Horário é obrigatório.",
-  }),
-  appointmentPriceInCents: z.number().min(1, {
-    message: "Valor da consulta é obrigatório.",
-  }),
-  paymentStatus: z.enum(["paid", "pending", "overdue"], {
-    required_error: "Status de pagamento é obrigatório.",
-  }),
-  appointmentStatus: z
-    .enum(["confirmed", "cancelled"], {
-      required_error: "Status da consulta é obrigatório.",
-    })
-    .optional(),
+  time: z.string().min(1, "Horário é obrigatório"),
+  appointmentPriceInCents: z.number().min(0, "Valor da consulta é obrigatório"),
+  paymentStatus: z.enum(["paid", "pending", "overdue"]),
+  appointmentStatus: z.enum(["confirmed", "pending", "cancelled", "completed"]),
   notes: z.string().optional(),
 });
+
+export type UpsertAppointmentFormData = z.infer<typeof upsertAppointmentSchema>;
