@@ -1,22 +1,18 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
 
+import { actionClient } from "@/lib/next-safe-action";
+import { auth } from "@/lib/auth";
 import { db } from "@/db";
 import { doctorsTable } from "@/db/schema";
-import { auth } from "@/lib/auth";
-import { actionClient } from "@/lib/next-safe-action";
+import { updateDoctorStatusSchema } from "./schema";
 
-export const deleteDoctor = actionClient
-  .schema(
-    z.object({
-      id: z.string().uuid(),
-    }),
-  )
+export const updateDoctorStatus = actionClient
+  .schema(updateDoctorStatusSchema)
   .action(async ({ parsedInput }) => {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -39,23 +35,34 @@ export const deleteDoctor = actionClient
       redirect("/clinic-form");
     }
 
+    const { doctorId, status } = parsedInput;
+
+    // Verificar se o médico pertence à clínica do usuário
     const doctor = await db.query.doctorsTable.findFirst({
-      where: eq(doctorsTable.id, parsedInput.id),
+      where: (doctors, { eq }) => eq(doctors.id, doctorId),
     });
 
     if (!doctor) {
-      throw new Error("Médico não encontrado");
+      throw new Error("Médico não encontrado.");
     }
 
     if (doctor.clinicId !== userClinic.clinic.id) {
-      throw new Error("Você não tem permissão para deletar este médico.");
+      throw new Error("Você não tem permissão para alterar este médico.");
     }
 
-    await db.delete(doctorsTable).where(eq(doctorsTable.id, parsedInput.id));
+    // Atualizar o status do médico
+    await db
+      .update(doctorsTable)
+      .set({
+        status,
+        updatedAt: new Date(),
+      })
+      .where(eq(doctorsTable.id, doctorId));
+
     revalidatePath("/doctors");
 
     return {
       success: true,
-      message: "Médico deletado com sucesso.",
+      message: `Status do médico atualizado para: ${status}`,
     };
   });

@@ -125,6 +125,11 @@ export const doctorsTable = pgTable("doctors", {
   availableToTime: time("available_to_time").notNull(),
   specialty: text("specialty").notNull(),
   appointmentPriceInCents: integer("appointment_price_in_cents").notNull(),
+  status: text("status", {
+    enum: ["active", "inactive", "busy"],
+  })
+    .notNull()
+    .default("active"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

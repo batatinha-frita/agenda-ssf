@@ -2,16 +2,20 @@
 
 import { useState } from "react";
 import { SearchBar } from "@/components/ui/search-bar";
-import { EmptyState } from "@/components/ui/empty-state";
-import DoctorCard from "./doctor-card";
+import { DoctorsTable } from "./doctors-table";
 import { doctorsTable } from "@/db/schema";
-import { Stethoscope } from "lucide-react";
 
 interface DoctorsClientPageProps {
   doctors: (typeof doctorsTable.$inferSelect)[];
+  showSearchOnly?: boolean;
+  showTableOnly?: boolean;
 }
 
-export function DoctorsClientPage({ doctors }: DoctorsClientPageProps) {
+export function DoctorsClientPage({
+  doctors,
+  showSearchOnly = false,
+  showTableOnly = false,
+}: DoctorsClientPageProps) {
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
 
   const handleSearch = (query: string) => {
@@ -29,6 +33,23 @@ export function DoctorsClientPage({ doctors }: DoctorsClientPageProps) {
 
     setFilteredDoctors(filtered);
   };
+
+  // Se for apenas para mostrar a pesquisa
+  if (showSearchOnly) {
+    return (
+      <SearchBar
+        placeholder="Pesquisar médicos por nome ou especialidade..."
+        onSearch={handleSearch}
+      />
+    );
+  }
+
+  // Se for apenas para mostrar a tabela
+  if (showTableOnly) {
+    return <DoctorsTable doctors={filteredDoctors} />;
+  }
+
+  // Layout padrão (compatibilidade com uso anterior)
   return (
     <div className="mt-8">
       <SearchBar
@@ -36,19 +57,7 @@ export function DoctorsClientPage({ doctors }: DoctorsClientPageProps) {
         className="mb-6"
         onSearch={handleSearch}
       />
-      {filteredDoctors.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredDoctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
-          ))}
-        </div>
-      ) : (
-        <EmptyState
-          icon={Stethoscope}
-          title="Nenhum médico encontrado"
-          description="Tente uma pesquisa diferente ou adicione um novo médico à sua clínica."
-        />
-      )}
+      <DoctorsTable doctors={filteredDoctors} />
     </div>
   );
 }

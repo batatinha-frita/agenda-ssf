@@ -8,12 +8,15 @@ import { doctorsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AddDoctorButton from "./_components/add-doctor-button";
-import { DoctorsClientPage } from "./_components/doctors-client-page";
+import { DoctorsFilterProvider } from "./_components/doctors-filter-context";
+import { DoctorsSearchBar } from "./_components/doctors-search-bar";
+import { DoctorsTableContainer } from "./_components/doctors-table-container";
 
-const DoctorsPage = async () => {
+export default async function DoctorsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
   if (!session?.user) {
     redirect("/authentication");
   }
@@ -35,20 +38,26 @@ const DoctorsPage = async () => {
     where: eq(doctorsTable.clinicId, userClinic.clinic.id),
     orderBy: (doctors, { asc }) => [asc(doctors.name)],
   });
+
   return (
     <PageContainer>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Médicos</h1>
-          <p className="text-muted-foreground text-sm">
-            Gerencie os médicos da sua clínica
-          </p>
+      <DoctorsFilterProvider doctors={doctors}>
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <div className="flex-shrink-0">
+            <h1 className="text-2xl font-bold">Médicos</h1>
+            <p className="text-muted-foreground text-sm">
+              Gerencie os médicos da sua clínica
+            </p>
+          </div>
+          <div className="max-w-md flex-1">
+            <DoctorsSearchBar />
+          </div>
+          <div className="flex-shrink-0">
+            <AddDoctorButton />
+          </div>
         </div>
-        <AddDoctorButton />
-      </div>{" "}
-      <DoctorsClientPage doctors={doctors} />
+        <DoctorsTableContainer />
+      </DoctorsFilterProvider>
     </PageContainer>
   );
-};
-
-export default DoctorsPage;
+}
