@@ -7,6 +7,7 @@ import {
   Stethoscope,
   UsersRound,
   FileText,
+  Gem,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -123,6 +124,12 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Link href="/subscription">
+                    <Gem />
+                    Assinatura
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut}>
                   <LogOut />
                   Sair
