@@ -11,14 +11,19 @@ interface DoctorsFilterContextType {
   handleSearch: (query: string) => void;
 }
 
-const DoctorsFilterContext = createContext<DoctorsFilterContextType | null>(null);
+const DoctorsFilterContext = createContext<DoctorsFilterContextType | null>(
+  null,
+);
 
 interface DoctorsFilterProviderProps {
   doctors: Doctor[];
   children: ReactNode;
 }
 
-export function DoctorsFilterProvider({ doctors, children }: DoctorsFilterProviderProps) {
+export function DoctorsFilterProvider({
+  doctors,
+  children,
+}: DoctorsFilterProviderProps) {
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
 
   const handleSearch = (query: string) => {
@@ -38,11 +43,11 @@ export function DoctorsFilterProvider({ doctors, children }: DoctorsFilterProvid
   };
 
   return (
-    <DoctorsFilterContext.Provider 
-      value={{ 
-        allDoctors: doctors, 
-        filteredDoctors, 
-        handleSearch 
+    <DoctorsFilterContext.Provider
+      value={{
+        allDoctors: doctors,
+        filteredDoctors,
+        handleSearch,
       }}
     >
       {children}
@@ -53,7 +58,9 @@ export function DoctorsFilterProvider({ doctors, children }: DoctorsFilterProvid
 export function useDoctorsFilter() {
   const context = useContext(DoctorsFilterContext);
   if (!context) {
-    throw new Error("useDoctorsFilter must be used within DoctorsFilterProvider");
+    throw new Error(
+      "useDoctorsFilter must be used within DoctorsFilterProvider",
+    );
   }
   return context;
 }

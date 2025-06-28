@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { PageContainer } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { db } from "@/db";
 import { doctorsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -43,11 +44,14 @@ export default async function DoctorsPage() {
     <PageContainer>
       <DoctorsFilterProvider doctors={doctors}>
         <div className="mb-8 flex items-center justify-between gap-4">
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold">Médicos</h1>
-            <p className="text-muted-foreground text-sm">
-              Gerencie os médicos da sua clínica
-            </p>
+          <div className="flex flex-shrink-0 items-center">
+            <BackButton href="/dashboard" />
+            <div>
+              <h1 className="text-2xl font-bold">Médicos</h1>
+              <p className="text-muted-foreground text-sm">
+                Gerencie os médicos da sua clínica
+              </p>
+            </div>
           </div>
           <div className="max-w-md flex-1">
             <DoctorsSearchBar />

@@ -9,6 +9,7 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { auth } from "@/lib/auth";
 import { hasActiveSubscription } from "@/lib/subscription";
 
@@ -31,14 +32,19 @@ const SubscriptionPage = async () => {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Assinatura</PageTitle>
-          <PageDescription>
-            {access.type === "trial"
-              ? `Gerencie sua assinatura. Trial restante: ${access.daysLeft} dias`
-              : access.type === "paid"
-                ? "Gerencie sua assinatura ativa."
-                : "Seu trial expirou. Assine para continuar usando o sistema."}
-          </PageDescription>
+          <div className="flex items-center">
+            <BackButton href="/dashboard" />
+            <div>
+              <PageTitle>Assinatura</PageTitle>
+              <PageDescription>
+                {access.type === "trial"
+                  ? `Gerencie sua assinatura. Trial restante: ${access.daysLeft} dias`
+                  : access.type === "paid"
+                    ? "Gerencie sua assinatura ativa."
+                    : "Seu trial expirou. Assine para continuar usando o sistema."}
+              </PageDescription>
+            </div>
+          </div>
         </PageHeaderContent>
       </PageHeader>
       <PageContent>

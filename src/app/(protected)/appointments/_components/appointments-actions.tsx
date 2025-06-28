@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/ui/back-button";
 import { FileSpreadsheet, Printer, Plus } from "lucide-react";
 
 interface AppointmentsActionsProps {
@@ -16,12 +17,15 @@ export function AppointmentsActions({
 }: AppointmentsActionsProps) {
   return (
     <div className="mb-6 flex items-center justify-between">
-      <div>
-        <h1 className="text-2xl font-bold">Agendamentos</h1>
-        <p className="text-muted-foreground text-sm">
-          Acesse uma visão detalhada de métricas principais e resultados dos
-          pacientes
-        </p>
+      <div className="flex items-center">
+        <BackButton href="/dashboard" />
+        <div>
+          <h1 className="text-2xl font-bold">Agendamentos</h1>
+          <p className="text-muted-foreground text-sm">
+            Acesse uma visão detalhada de métricas principais e resultados dos
+            pacientes
+          </p>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">

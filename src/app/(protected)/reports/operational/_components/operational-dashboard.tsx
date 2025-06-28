@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { getOperationalData } from "@/actions/get-operational-data";
 import { PageContainer } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -105,12 +106,7 @@ export function OperationalDashboard() {
         {/* Controles que não aparecem na impressão */}
         <div className="no-print mb-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/reports">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar
-              </Link>
-            </Button>
+            <BackButton href="/reports" />
             <div>
               <h1 className="flex items-center gap-2 text-3xl font-bold">
                 <BarChart3 className="h-8 w-8 text-blue-600" />

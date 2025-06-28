@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { getPaymentsReport } from "@/actions/get-payments-report";
 import { PageContainer } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -241,14 +242,17 @@ export default function FinancialReportsPage() {
       <div className="space-y-6">
         {/* Cabeçalho com controles de impressão */}
         <div className="no-print flex items-start justify-between gap-6">
-          <div>
-            <h1 className="flex items-center gap-2 text-3xl font-bold">
-              <BarChart3 className="h-8 w-8 text-blue-600" />
-              Relatórios da Clínica
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Dashboard principal com indicadores operacionais e análises
-            </p>
+          <div className="flex items-center">
+            <BackButton href="/reports" />
+            <div>
+              <h1 className="flex items-center gap-2 text-3xl font-bold">
+                <BarChart3 className="h-8 w-8 text-blue-600" />
+                Relatórios da Clínica
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Dashboard principal com indicadores operacionais e análises
+              </p>
+            </div>
           </div>
 
           {/* Filtros inline */}

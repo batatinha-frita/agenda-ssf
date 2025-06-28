@@ -23,6 +23,7 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -82,18 +83,15 @@ const PatientDetailsPage = async ({ params }: PatientDetailsPageProps) => {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <div className="flex items-center space-x-2">
-            <Link href="/patients">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4" />
-                Voltar
-              </Button>
-            </Link>
+          <div className="flex items-center">
+            <BackButton href="/patients" />
+            <div>
+              <PageTitle>Detalhes do Paciente</PageTitle>
+              <PageDescription>
+                Informações completas sobre {patient.name}
+              </PageDescription>
+            </div>
           </div>
-          <PageTitle>Detalhes do Paciente</PageTitle>
-          <PageDescription>
-            Informações completas sobre {patient.name}
-          </PageDescription>
         </PageHeaderContent>
         <PageActions>
           {" "}

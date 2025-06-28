@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { PageContainer } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import { db } from "@/db";
 import { patientsTable, appointmentsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -84,11 +85,14 @@ const PatientsPage = async () => {
   return (
     <PageContainer>
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Pacientes</h1>
-          <p className="text-muted-foreground text-sm">
-            Acesso a detalhes dos pacientes cadastrados
-          </p>
+        <div className="flex items-center">
+          <BackButton href="/dashboard" />
+          <div>
+            <h1 className="text-2xl font-bold">Pacientes</h1>
+            <p className="text-muted-foreground text-sm">
+              Acesso a detalhes dos pacientes cadastrados
+            </p>
+          </div>
         </div>
         <AddPatientButton />
       </div>{" "}

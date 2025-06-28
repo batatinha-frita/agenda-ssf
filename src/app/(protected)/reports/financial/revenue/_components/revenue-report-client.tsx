@@ -30,6 +30,7 @@ import {
   Printer,
 } from "lucide-react";
 import { PageContainer } from "@/components/ui/page-container";
+import { BackButton } from "@/components/ui/back-button";
 import {
   getRevenueReport,
   RevenueReportData,
@@ -316,14 +317,17 @@ export function RevenueReportClient() {
       <div className="space-y-6">
         {/* Cabeçalho com controles */}
         <div className="no-print flex items-start justify-between gap-6">
-          <div>
-            <h1 className="flex items-center gap-2 text-3xl font-bold">
-              <DollarSign className="h-8 w-8 text-green-600" />
-              Relatório de Receita por Período
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Análise detalhada da receita gerada por médicos e consultas
-            </p>
+          <div className="flex items-center">
+            <BackButton href="/reports/financial" />
+            <div>
+              <h1 className="flex items-center gap-2 text-3xl font-bold">
+                <DollarSign className="h-8 w-8 text-green-600" />
+                Relatório de Receita por Período
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Análise detalhada da receita gerada por médicos e consultas
+              </p>
+            </div>
           </div>
 
           {/* Filtros inline */}

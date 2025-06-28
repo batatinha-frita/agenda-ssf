@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/ui/back-button";
 import { Printer, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -46,12 +47,7 @@ export function PrintLayout({
       {/* Controles que não aparecem na impressão */}
       <div className="no-print mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" asChild>
-            <Link href={backUrl}>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
-            </Link>
-          </Button>
+          <BackButton href={backUrl} />
           <div>
             <h1 className="text-2xl font-bold">{title}</h1>
             {description && (
