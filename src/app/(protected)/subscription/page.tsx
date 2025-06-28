@@ -10,6 +10,7 @@ import {
   PageTitle,
 } from "@/components/ui/page-container";
 import { auth } from "@/lib/auth";
+import { hasActiveSubscription } from "@/lib/subscription";
 
 import { SubscriptionPlan } from "./_components/subscription-plan";
 
@@ -18,23 +19,32 @@ const SubscriptionPage = async () => {
     headers: await headers(),
   });
   if (!session) {
-    redirect("/login");
+    redirect("/authentication");
   }
   if (!session.user.clinic) {
     redirect("/clinic-form");
   }
+
+  const access = hasActiveSubscription(session.user);
+
   return (
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
           <PageTitle>Assinatura</PageTitle>
-          <PageDescription>Gerencie a sua assinatura.</PageDescription>
+          <PageDescription>
+            {access.type === "trial"
+              ? `Gerencie sua assinatura. Trial restante: ${access.daysLeft} dias`
+              : access.type === "paid"
+                ? "Gerencie sua assinatura ativa."
+                : "Seu trial expirou. Assine para continuar usando o sistema."}
+          </PageDescription>
         </PageHeaderContent>
       </PageHeader>
       <PageContent>
         <SubscriptionPlan
           className="w-[350px]"
-          active={session.user.plan === "essential"}
+          active={access.type === "paid"}
           userEmail={session.user.email}
         />
       </PageContent>
